@@ -23,7 +23,8 @@ define('APP', ROOT . 'Application' . DIRECTORY_SEPARATOR);
 // This is the (totally optional) auto-loader for Composer-dependencies (to load tools into your project).
 // If you have no idea what this means: Don't worry, you don't need it, simply leave it like it is.
 if (file_exists(ROOT . 'vendor/autoload.php')) {
-    require ROOT . 'vendor/autoload.php';
+    $loader = require ROOT . 'vendor/autoload.php';
+    $loader->add("Application\\", ROOT . 'Application/');
 }
 
 // load application config (error reporting etc.)
@@ -35,7 +36,9 @@ require APP . 'Libs/Helper.php';
 
 // load application class
 require APP . 'Core/Application.php';
-require APP . 'Core/Controller.php';
+require APP . 'Models/Model.php';
+require APP . 'Models/Song.php';
+
 
 // start the application
 $app = new Application();

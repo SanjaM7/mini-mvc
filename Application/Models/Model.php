@@ -7,133 +7,134 @@ use PDOException;
 
 class Model
 {
-    /**
-     * @var PDO
-     */
     private $db;
+    protected $table;
+    private $query;
+    public $result;
+    public $count = 0;
+    private $error = false;
+    private $shouldFetch = false;
 
-    /**
-     * @param object $db A PDO database connection
-     */
-    function __construct(PDO $db)
+    function __construct(string $table)
     {
         try {
-            $this->db = $db;
+            $this->openDatabaseConnection();
         } catch (PDOException $e) {
             exit('Database connection could not be established.');
         }
+        $this->table = $table;
     }
 
-    /**
-     * Get all songs from database
-     */
-    public function getAllSongs()
+    private function openDatabaseConnection()
     {
-        $sql = "SELECT id, artist, track, link FROM songs";
+        $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+        $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
+    }
+    /*
+    public function get($id)
+    {
+        $sql = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':id' => $id);
+        $query->execute($parameters);
+        return $query->fetchAll();
+    }
+    */
+    public function getAll()
+    {
+        $sql = "SELECT * FROM " . $this->table;
         $query = $this->db->prepare($sql);
         $query->execute();
-
-        // fetchAll() is the PDO method that gets all result rows, here in object-style because we defined this in
-        // core/controller.php! If you prefer to get an associative array as the result, then do
-        // $query->fetchAll(PDO::FETCH_ASSOC); or change core/controller.php's PDO options to
-        // $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ...
         return $query->fetchAll();
     }
 
-    /**
-     * Add a song to database
-     * TODO put this explanation into readme and remove it from here
-     * Please note that it's not necessary to "clean" our input in any way. With PDO all input is escaped properly
-     * automatically. We also don't use strip_tags() etc. here so we keep the input 100% original (so it's possible
-     * to save HTML and JS to the database, which is a valid use case). Data will only be cleaned when putting it out
-     * in the views (see the views for more info).
-     * @param string $artist Artist
-     * @param string $track Track
-     * @param string $link Link
-     */
-    public function addSong($artist, $track, $link)
+    /*
+    public function count()
     {
-        $sql = "INSERT INTO songs (artist, track, link) VALUES (:artist, :track, :link)";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':artist' => $artist, ':track' => $track, ':link' => $link);
-
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-
-        $query->execute($parameters);
-    }
-
-    /**
-     * Delete a song in the database
-     * Please note: this is just an example! In a real application you would not simply let everybody
-     * add/update/delete stuff!
-     * @param int $song_id Id of song
-     */
-    public function deleteSong($song_id)
-    {
-        $sql = "DELETE FROM songs WHERE id = :song_id";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':song_id' => $song_id);
-
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-
-        $query->execute($parameters);
-    }
-
-    /**
-     * Get a song from database
-     */
-    public function getSong($song_id)
-    {
-        $sql = "SELECT id, artist, track, link FROM songs WHERE id = :song_id LIMIT 1";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':song_id' => $song_id);
-
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-
-        $query->execute($parameters);
-
-        // fetch() is the PDO method that get exactly one result
-        return $query->fetch();
-    }
-
-    /**
-     * Update a song in database
-     * // TODO put this explaination into readme and remove it from here
-     * Please note that it's not necessary to "clean" our input in any way. With PDO all input is escaped properly
-     * automatically. We also don't use strip_tags() etc. here so we keep the input 100% original (so it's possible
-     * to save HTML and JS to the database, which is a valid use case). Data will only be cleaned when putting it out
-     * in the views (see the views for more info).
-     * @param string $artist Artist
-     * @param string $track Track
-     * @param string $link Link
-     * @param int $song_id Id
-     */
-    public function updateSong($artist, $track, $link, $song_id)
-    {
-        $sql = "UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :song_id";
-        $query = $this->db->prepare($sql);
-        $parameters = array(':artist' => $artist, ':track' => $track, ':link' => $link, ':song_id' => $song_id);
-
-        // useful for debugging: you can see the SQL behind above construction by using:
-        // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-
-        $query->execute($parameters);
-    }
-
-    /**
-     * Get simple "stats". This is just a simple demo to show
-     * how to use more than one model in a controller (see application/controller/songs.php for more)
-     */
-    public function getAmountOfSongs()
-    {
-        $sql = "SELECT COUNT(id) AS amount_of_songs FROM songs";
+        $sql = "SELECT COUNT(id) AS count FROM " . $this->table;
         $query = $this->db->prepare($sql);
         $query->execute();
-
-        // fetch() is the PDO method that get exactly one result
-        return $query->fetch()->amount_of_songs;
+        return $query->fetch()->count;
     }
+    */
+    /*
+    public function delete($id)
+    {
+        $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $query = $this->db->prepare($sql);
+        $parameters = array(':id' => $id);
+        $query->execute($parameters);
+    }
+    */
+
+        public function query($sql, $params = array())
+        {
+            $this->error = false;
+            if($this->query = $this->db->prepare($sql)) {
+                $pos = 1;
+                if (count($params)) {
+                    foreach ($params as $param)
+                        $this->query->bindValue($pos, $param);
+                        $pos++;
+                }
+
+                if ($this->query->execute()) {
+                    if($this->shouldFetch) {
+                        $this->result = $this->query->fetchAll(PDO::FETCH_OBJ);
+                    }
+                    $this->count = $this->query->rowCount();
+                } else {
+                    $this->error = true;
+                }
+            }
+
+            return $this;
+        }
+
+        public function action($action, $where = array()){
+            $sql = "{$action} FROM {$this->table}";
+            $params = array();
+            if(count($where) !== 3 and count($where)!==0){
+                return false;
+            }
+            if((count($where)) === 3){
+                $operators = array('=', '>', '<', '>=', '<=');
+
+                $field = $where[0];
+                $operator = $where[1];
+                $value = $where[2];
+
+                if(!in_array($operator, $operators)) {
+                    return false;
+                }
+
+                $params = array($value);
+                $sql = "{$sql} WHERE {$field} {$operator} ?";
+            }
+
+            if(!$this->query($sql, $params)->error()){
+                return $this;
+            }
+            return false;
+        }
+
+        public function get($where = array()){
+            $this->shouldFetch = true;
+            return $this->action('SELECT * ', $where);
+        }
+
+        public function delete($where){
+            return $this->action('DELETE ', $where);
+        }
+
+        public function error()
+        {
+            return $this->error;
+        }
+
+        public function count()
+        {
+            return $this->count();
+        }
 }
+
