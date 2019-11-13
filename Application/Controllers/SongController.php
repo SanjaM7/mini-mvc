@@ -10,9 +10,6 @@ class SongController
 
     public function __construct()
     {
-        //$songModelClassName = "Application\\Models\\Song";
-        //$this->song = new $songModelClassName();
-        //require APP . 'Models/Song.php';
         $this->model = new Song();
     }
 
