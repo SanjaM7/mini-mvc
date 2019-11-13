@@ -2,8 +2,6 @@
 
 namespace Application\Controllers;
 
-use Application\Core\Controller;
-
 /**
  * Class Home
  *
@@ -12,7 +10,7 @@ use Application\Core\Controller;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class HomeController extends Controller
+class HomeController
 {
     /**
      * PAGE: index

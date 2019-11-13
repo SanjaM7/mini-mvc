@@ -2,6 +2,7 @@
 
 namespace Application\Controllers;
 
+
 use Application\Models\Song;
 
 class SongController
@@ -25,15 +26,6 @@ class SongController
         require APP . 'view/_templates/footer.php';
     }
 
-    public function deleteSong($song_id)
-    {
-        if (isset($song_id)) {
-            $this->model->delete($song_id);
-        }
-
-        header('location: ' . URL . 'song/index');
-    }
-
     public function addSong()
     {
         if (isset($_POST["submit_add_song"])) {
@@ -47,10 +39,24 @@ class SongController
         header('location: ' . URL . 'song/index');
     }
 
+    public function updateSong()
+    {
+        if (isset($_POST["submit_update_song"])) {
+            $song = new Song();
+            $song->id = $_POST['song_id'];
+            $song->artist = $_POST["artist"];
+            $song->track = $_POST['track'];
+            $song->link = $_POST['link'];
+            $this->model->update($song);
+        }
+
+        header('location: ' . URL . 'song/index');
+    }
+
     public function editSong($song_id)
     {
         if (isset($song_id)) {
-            $song = $this->model->getSong($song_id);
+            $song = $this->model->get($song_id);
 
             require APP . 'view/_templates/header.php';
             require APP . 'view/songs/edit.php';
@@ -58,15 +64,6 @@ class SongController
         } else {
             header('location: ' . URL . 'song/index');
         }
-    }
-
-    public function updateSong()
-    {
-        if (isset($_POST["submit_update_song"])) {
-            $this->repository->updateSong($_POST["artist"], $_POST["track"],  $_POST["link"], $_POST['song_id']);
-        }
-
-        header('location: ' . URL . 'song/index');
     }
 
     public function ajaxGetStats()

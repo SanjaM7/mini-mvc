@@ -2,8 +2,6 @@
 
 namespace Application\Controllers;
 
-use Application\Core\Controller;
-
 /**
  * Class Problem
  * Formerly named "Error", but as PHP 7 does not allow Error as class name anymore (as there's a Error class in the
@@ -14,7 +12,7 @@ use Application\Core\Controller;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ProblemController extends Controller
+class ProblemController
 {
     /**
      * PAGE: index
