@@ -35,7 +35,7 @@ class Model
         $query = $this->db->prepare($sql);
         $parameters = array(':id' => $id);
         $query->execute($parameters);
-        return $query->fetchAll();
+        return $query->fetch();
     }
 
     public function getAll()
@@ -60,17 +60,18 @@ class Model
         $query = $this->db->prepare($sql);
         $parameters = array(':id' => $id);
         $query->execute($parameters);
+        return $query->rowCount();
     }
 
     public function add($param)
     {
-        $sql = "INSERT INTO " .$this->table;
+        //"insert into songs (artist, track, link) values (:artist, :track, :link)";
+        $sql = "INSERT INTO " . $this->table;
         $assocArray = get_object_vars($param);
         unset($assocArray['id']);
         unset($assocArray['db']);
         unset($assocArray['table']);
 
-        //"insert into songs (artist, track, link) values (:artist, :track, :link)";
         $keys = array_keys($assocArray);
         $columns = implode(", ", $keys);
 
@@ -87,5 +88,38 @@ class Model
         $query->execute($values);
         $param->id = $this->db->lastInsertId();
     }
+
+
+    public function update($param)
+    {
+        //UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :id;
+        $sql = "UPDATE " . $this->table;
+        $id = (int)$param->id;
+        $assocArray = get_object_vars($param);
+        unset($assocArray['id']);
+        unset($assocArray['db']);
+        unset($assocArray['table']);
+
+        $keys = array_keys($assocArray);
+
+        $setArgs = array();
+        foreach($keys as $key){
+            $setArgs[] = "$key = :$key";
+        }
+
+        $setStatement = implode(", ", $setArgs);
+
+        $values = array();
+        foreach ($keys as $key){
+            $values[":$key"] = $assocArray[$key];
+        }
+
+        $values[":id"] = $id;
+        $sql = "$sql SET $setStatement WHERE id = :id";
+        $query = $this->db->prepare($sql);
+        $query->execute($values);
+        return $query->rowCount();
+    }
+
 }
 
