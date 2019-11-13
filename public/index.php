@@ -35,9 +35,9 @@ require APP . 'config/config.php';
 require APP . 'Libs/Helper.php';
 
 // load application class
-require APP . 'Core/Application.php';
-require APP . 'Models/Model.php';
-require APP . 'Models/Song.php';
+//require APP . 'Core/Application.php';
+//require APP . 'Models/Model.php';
+//require APP . 'Models/Song.php';
 
 
 // start the application

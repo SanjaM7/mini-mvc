@@ -2,7 +2,6 @@
 
 namespace Application\Controllers;
 
-
 use Application\Models\Song;
 
 class SongController
