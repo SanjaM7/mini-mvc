@@ -18,16 +18,13 @@ class SongController
 
     public function index()
     {
-        if(!$this->model->get()){
-            die();
-        }
-        $songs = $this->model->result;
-        $amount_of_songs = $this->model->count;
+        $songs = $this->model->getAll();
+        $amount_of_songs = $this->model->count();
         require APP . 'view/_templates/header.php';
         require APP . 'view/songs/index.php';
         require APP . 'view/_templates/footer.php';
     }
-    /*
+
     public function deleteSong($song_id)
     {
         if (isset($song_id)) {
@@ -36,26 +33,15 @@ class SongController
 
         header('location: ' . URL . 'song/index');
     }
-    */
-
-    public function deleteSong($song_id)
-    {
-        if (isset($song_id)) {
-            $this->model->delete(array('id', '=', $song_id));
-        }
-
-        header('location: ' . URL . 'song/index');
-    }
 
     public function addSong()
     {
         if (isset($_POST["submit_add_song"])) {
-            $params = array (
-                "artist" => $_POST["artist"],
-                "track" => $_POST["track"],
-                "link" => $_POST["link"]
-            );
-            $this->model->create($params);
+            $song = new Song();
+            $song->artist = $_POST["artist"];
+            $song->track = $_POST["track"];
+            $song->link = $_POST["link"];
+            $this->model->add($song);
         }
 
         header('location: ' . URL . 'song/index');

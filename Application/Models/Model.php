@@ -7,13 +7,11 @@ use PDOException;
 
 class Model
 {
-    private $db;
     protected $table;
-    private $query;
-    public $result;
-    public $count = 0;
-    private $error = false;
-    private $shouldFetch = false;
+    /**
+     * @var PDO
+     */
+    private $db;
 
     function __construct(string $table)
     {
@@ -30,7 +28,7 @@ class Model
         $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
         $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
     }
-    /*
+
     public function get($id)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
@@ -39,7 +37,7 @@ class Model
         $query->execute($parameters);
         return $query->fetchAll();
     }
-    */
+
     public function getAll()
     {
         $sql = "SELECT * FROM " . $this->table;
@@ -48,7 +46,6 @@ class Model
         return $query->fetchAll();
     }
 
-    /*
     public function count()
     {
         $sql = "SELECT COUNT(id) AS count FROM " . $this->table;
@@ -56,8 +53,7 @@ class Model
         $query->execute();
         return $query->fetch()->count;
     }
-    */
-    /*
+
     public function delete($id)
     {
         $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
@@ -65,76 +61,31 @@ class Model
         $parameters = array(':id' => $id);
         $query->execute($parameters);
     }
-    */
 
-        public function query($sql, $params = array())
-        {
-            $this->error = false;
-            if($this->query = $this->db->prepare($sql)) {
-                $pos = 1;
-                if (count($params)) {
-                    foreach ($params as $param)
-                        $this->query->bindValue($pos, $param);
-                        $pos++;
-                }
+    public function add($param)
+    {
+        $sql = "INSERT INTO " .$this->table;
+        $assocArray = get_object_vars($param);
+        unset($assocArray['id']);
+        unset($assocArray['db']);
+        unset($assocArray['table']);
 
-                if ($this->query->execute()) {
-                    if($this->shouldFetch) {
-                        $this->result = $this->query->fetchAll(PDO::FETCH_OBJ);
-                    }
-                    $this->count = $this->query->rowCount();
-                } else {
-                    $this->error = true;
-                }
-            }
+        //"insert into songs (artist, track, link) values (:artist, :track, :link)";
+        $keys = array_keys($assocArray);
+        $columns = implode(", ", $keys);
 
-            return $this;
+        $values = array();
+        foreach ($keys as $key){
+            $values[":$key"] = $assocArray[$key];
         }
 
-        public function action($action, $where = array()){
-            $sql = "{$action} FROM {$this->table}";
-            $params = array();
-            if(count($where) !== 3 and count($where)!==0){
-                return false;
-            }
-            if((count($where)) === 3){
-                $operators = array('=', '>', '<', '>=', '<=');
+        $valueKeys = array_keys($values);
+        $valuesAliases = implode(", ", $valueKeys);
+        $sql = "$sql ($columns) values ($valuesAliases)";
 
-                $field = $where[0];
-                $operator = $where[1];
-                $value = $where[2];
-
-                if(!in_array($operator, $operators)) {
-                    return false;
-                }
-
-                $params = array($value);
-                $sql = "{$sql} WHERE {$field} {$operator} ?";
-            }
-
-            if(!$this->query($sql, $params)->error()){
-                return $this;
-            }
-            return false;
-        }
-
-        public function get($where = array()){
-            $this->shouldFetch = true;
-            return $this->action('SELECT * ', $where);
-        }
-
-        public function delete($where){
-            return $this->action('DELETE ', $where);
-        }
-
-        public function error()
-        {
-            return $this->error;
-        }
-
-        public function count()
-        {
-            return $this->count();
-        }
+        $query = $this->db->prepare($sql);
+        $query->execute($values);
+        $param->id = $this->db->lastInsertId();
+    }
 }
 
