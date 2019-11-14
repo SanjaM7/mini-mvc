@@ -7,7 +7,7 @@ use PDOException;
 
 class Model
 {
-    protected $table;
+    public $table;
     /**
      * @var PDO
      */
@@ -126,8 +126,15 @@ class Model
         //SELECT email FROM users WHERE email = :email;
         $sql = "SELECT * FROM $this->table WHERE $key = :$key";
         $query = $this->db->prepare($sql);
+        $value = array(
+            ":$key" => $value
+        );
         $query->execute($value);
-        return $query->fetchAll();
+        $result = $query->fetchAll(\PDO::FETCH_CLASS, get_called_class());
+        if(count($result) === 1){
+            return $result[0];
+        }
+        return $result;
     }
 
     public function exists($key, $value)

@@ -3,16 +3,7 @@
 <div class="logo">
     MINI
 </div>
-
-        <?php
-        /**
-         * @var array $errors
-         */
-        foreach ($errors as $error) : ?>
-            <h4 class="alert alert-dismissible alert-danger">
-            <?= $error; ?>
-            </h4>
-        <?php endforeach; ?>
+        <?php require ROOT . 'view/includes/errors.php';?>
     </div>
 
 <div class="col-lg-7">

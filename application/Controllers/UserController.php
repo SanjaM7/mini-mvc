@@ -24,6 +24,7 @@ class UserController
 
     public function logIn()
     {
+        $errors = SessionHelper::getAndClearError();
         require ROOT . 'view/_templates/header.php';
         require ROOT . 'view/user/log_in.php';
         require ROOT . 'view/_templates/footer.php';
@@ -38,7 +39,8 @@ class UserController
             $this->model->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             $passwordRepeat = $_POST['passwordRepeat'];
 
-            $errors = $this->model->validateUserParams($password, $passwordRepeat);
+            $errors = array();
+            $errors = $this->model->validateRegisterParams($password, $passwordRepeat);
 
             if($errors){
                 SessionHelper::setErrors($errors);
@@ -70,7 +72,30 @@ class UserController
             $this->model->username = $_POST["username"];
             $password = $_POST["password"];
 
-            die();
+            $errors = $this->model->validateLogInParams($password);
+
+            if($errors){
+                SessionHelper::setErrors($errors);
+                header('location: ' . URL . 'user/logIn');
+                return;
+            }
+
+            $this->model = $this->model->getWhere('username', $this->model->username);
+
+            if(!isset($this->model->email)){
+                $errors[] = "Username does not exists";
+            } elseif (!password_verify($password, $this->model->hashedPassword)){
+                $errors[] = "Inccorect password";
+            }
+
+            if($errors){
+                SessionHelper::setErrors($errors);
+                header('location: ' . URL . 'user/logIn');
+                return;
+            }
+
+            SessionHelper::logIn($this->model->id);
+            header('location: ' . URL . 'home/index');
         }
     }
 }

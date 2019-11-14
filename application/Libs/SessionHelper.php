@@ -20,4 +20,13 @@ class SessionHelper
         return $errors;
     }
 
+    public static function logIn($id)
+    {
+        $_SESSION['id'] = $id;
+    }
+
+    public static function getUserId()
+    {
+        return $_SESSION['id'];
+    }
 }

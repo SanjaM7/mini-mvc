@@ -2,6 +2,8 @@
 
 namespace Application\Controllers;
 
+use Application\Libs\SessionHelper;
+
 /**
  * Class Home
  *
@@ -18,10 +20,12 @@ class HomeController
      */
     public function index()
     {
+        $id = SessionHelper::getUserId();
         // load views
         require ROOT . 'view/_templates/header.php';
         require ROOT . 'view/home/index.php';
         require ROOT . 'view/_templates/footer.php';
+
     }
 
     /**
