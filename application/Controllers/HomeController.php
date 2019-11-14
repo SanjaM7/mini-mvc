@@ -19,9 +19,9 @@ class HomeController
     public function index()
     {
         // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/home/index.php';
-        require APP . 'view/_templates/footer.php';
+        require ROOT . 'view/_templates/header.php';
+        require ROOT . 'view/home/index.php';
+        require ROOT . 'view/_templates/footer.php';
     }
 
     /**
@@ -32,9 +32,9 @@ class HomeController
     public function exampleOne()
     {
         // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/home/example_one.php';
-        require APP . 'view/_templates/footer.php';
+        require ROOT. 'view/_templates/header.php';
+        require ROOT . 'view/home/example_one.php';
+        require ROOT . 'view/_templates/footer.php';
     }
 
     /**
@@ -45,8 +45,8 @@ class HomeController
     public function exampleTwo()
     {
         // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/home/example_two.php';
-        require APP . 'view/_templates/footer.php';
+        require ROOT . 'view/_templates/header.php';
+        require ROOT . 'view/home/example_two.php';
+        require ROOT . 'view/_templates/footer.php';
     }
 }

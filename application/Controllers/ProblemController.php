@@ -21,8 +21,8 @@ class ProblemController
     public function index()
     {
         // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/problem/index.php';
-        require APP . 'view/_templates/footer.php';
+        require ROOT . 'view/_templates/header.php';
+        require ROOT . 'view/problem/index.php';
+        require ROOT. 'view/_templates/footer.php';
     }
 }

@@ -17,19 +17,18 @@ class SongController
     {
         $songs = $this->model->getAll();
         $amount_of_songs = $this->model->count();
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/songs/index.php';
-        require APP . 'view/_templates/footer.php';
+        require ROOT . 'view/_templates/header.php';
+        require ROOT . 'view/songs/index.php';
+        require ROOT . 'view/_templates/footer.php';
     }
 
     public function addSong()
     {
         if (isset($_POST["submit_add_song"])) {
-            $song = new Song();
-            $song->artist = $_POST["artist"];
-            $song->track = $_POST["track"];
-            $song->link = $_POST["link"];
-            $this->model->add($song);
+            $this->model->artist = $_POST["artist"];
+            $this->model->track = $_POST["track"];
+            $this->model->link = $_POST["link"];
+            $this->model->save();
         }
 
         header('location: ' . URL . 'song/index');
@@ -38,12 +37,11 @@ class SongController
     public function updateSong()
     {
         if (isset($_POST["submit_update_song"])) {
-            $song = new Song();
-            $song->id = $_POST['song_id'];
-            $song->artist = $_POST["artist"];
-            $song->track = $_POST['track'];
-            $song->link = $_POST['link'];
-            $this->model->update($song);
+            $this->model->id = $_POST['song_id'];
+            $this->model->artist = $_POST["artist"];
+            $this->model->track = $_POST['track'];
+            $this->model->link = $_POST['link'];
+            $this->model->update();
         }
 
         header('location: ' . URL . 'song/index');
@@ -54,9 +52,9 @@ class SongController
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
 
-            require APP . 'view/_templates/header.php';
-            require APP . 'view/songs/edit.php';
-            require APP . 'view/_templates/footer.php';
+            require ROOT . 'view/_templates/header.php';
+            require ROOT . 'view/songs/edit.php';
+            require ROOT . 'view/_templates/footer.php';
         } else {
             header('location: ' . URL . 'song/index');
         }
@@ -64,7 +62,7 @@ class SongController
 
     public function ajaxGetStats()
     {
-        $amount_of_songs = $this->repository->getAmountOfSongs();
+        $amount_of_songs = $this->model->getAmountOfSongs();
 
         // simply echo out something. A supersimple API would be possible by echoing JSON here
         echo $amount_of_songs;

@@ -63,11 +63,11 @@ class Model
         return $query->rowCount();
     }
 
-    public function add($param)
+    public function save()
     {
         //"insert into songs (artist, track, link) values (:artist, :track, :link)";
         $sql = "INSERT INTO " . $this->table;
-        $assocArray = get_object_vars($param);
+        $assocArray = get_object_vars($this);
         unset($assocArray['id']);
         unset($assocArray['db']);
         unset($assocArray['table']);
@@ -86,16 +86,16 @@ class Model
 
         $query = $this->db->prepare($sql);
         $query->execute($values);
-        $param->id = $this->db->lastInsertId();
+        $this->id = $this->db->lastInsertId();
     }
 
 
-    public function update($param)
+    public function update()
     {
         //UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :id;
         $sql = "UPDATE " . $this->table;
-        $id = (int)$param->id;
-        $assocArray = get_object_vars($param);
+        $id = (int)$this->id;
+        $assocArray = get_object_vars($this);
         unset($assocArray['id']);
         unset($assocArray['db']);
         unset($assocArray['table']);
@@ -121,5 +121,25 @@ class Model
         return $query->rowCount();
     }
 
+    public function getWhere($key, $value)
+    {
+        //SELECT email FROM users WHERE email = :email;
+        $sql = "SELECT * FROM $this->table WHERE $key = :$key";
+        $query = $this->db->prepare($sql);
+        $query->execute($value);
+        return $query->fetchAll();
+    }
+
+    public function exists($key, $value)
+    {
+        //SELECT email FROM users WHERE email = :email;
+        $sql = "SELECT * FROM $this->table WHERE $key = :$key";
+        $query = $this->db->prepare($sql);
+        $value = array(
+            ":$key" => $value
+        );
+        $query->execute($value);
+        return (bool)$query->fetch();
+    }
 }
 

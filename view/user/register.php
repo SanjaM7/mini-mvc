@@ -1,3 +1,21 @@
+<div class="row">
+    <div class="col-lg-5 text-center">
+<div class="logo">
+    MINI
+</div>
+
+        <?php
+        /**
+         * @var array $errors
+         */
+        foreach ($errors as $error) : ?>
+            <h4 class="alert alert-dismissible alert-danger">
+            <?= $error; ?>
+            </h4>
+        <?php endforeach; ?>
+    </div>
+
+<div class="col-lg-7">
 <div class="jumbotron text-center">
     <h3>REGISTER</h3>
     <p>It’s quick and easy.</p>
@@ -24,6 +42,7 @@
         </div>
         <button type="submit" name="submit_register" class="btn btn-secondary">Register</button><br>
     </form>
+</div>
 </div>
 </div>
 

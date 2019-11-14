@@ -23,21 +23,15 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-
+            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>">home</a></li>
+            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampleone">subpage</a></li>
+            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage 2</a></li>
+            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a></li>
         </ul>
         <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Register</a>
         <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0" type="submit">Log In</a>
     </div>
 </nav>
-    <!-- logo -->
-    <div class="logo">
-        MINI
-    </div>
 
-    <!-- navigation -->
-    <div class="navigation">
-        <a href="<?php echo URL; ?>">home</a>
-        <a href="<?php echo URL; ?>home/exampleone">subpage</a>
-        <a href="<?php echo URL; ?>home/exampletwo">subpage 2</a>
-        <a href="<?php echo URL; ?>song">songs</a>
-    </div>
+
+
