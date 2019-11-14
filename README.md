@@ -21,7 +21,7 @@ mini-mvc is simple PHP application with MVC structure that uses only native PHP 
 2. Edit the database credentials in application/config/config.php database name is mini
 3. Execute the .sql statements in the _install/-folder
 
-####VHost config
+#### VHost config
 ```html
 <VirtualHost *:80>
   ServerName mini-mvc.local
