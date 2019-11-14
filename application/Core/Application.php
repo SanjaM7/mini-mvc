@@ -28,7 +28,7 @@ class Application
         // check for controller: no controller given ? then load start-page
         if (!$this->url_controller) {
 
-            require APP . 'Controllers/HomeController.php';
+            //require APP . 'Controllers/HomeController.php';
             $page = new HomeController();
             $page->index();
 
@@ -37,7 +37,7 @@ class Application
 
             // if so, then load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
-            require APP . 'Controllers/' . $this->url_controller . '.php';
+            //require APP . 'Controllers/' . $this->url_controller . '.php';
             $controllerClassName = "Application\\Controllers\\" . $this->url_controller;
             $this->url_controller = new $controllerClassName();
 

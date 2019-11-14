@@ -20,4 +20,23 @@ mini-mvc is simple PHP application with MVC structure that uses only native PHP 
 1. Run git clone https://github.com/SanjaM7/mini-mvc.git in directory where you want to install project
 2. Edit the database credentials in application/config/config.php database name is mini
 3. Execute the .sql statements in the _install/-folder
-4. VHost config: ServerName mini-mvc.local, DocumentRoot /var/www/mini-mvc
+
+####VHost config
+```html
+<VirtualHost *:80>
+  ServerName mini-mvc.local
+  DocumentRoot /var/www/mini-mvc
+  Options Indexes FollowSymLinks
+  <Directory "/var/www/mini-mvc">
+    AllowOverride All
+    <IfVersion < 2.4>
+      Allow from all
+    </IfVersion>
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+  </Directory>
+    ErrorLog /var/log/apache2/mini-mvc_error.log
+    CustomLog /var/log/apache2/mini-mvc_access.log combined
+</VirtualHost>
+```
