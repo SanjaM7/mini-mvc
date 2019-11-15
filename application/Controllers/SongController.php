@@ -2,6 +2,7 @@
 
 namespace Application\Controllers;
 
+use Application\Libs\PageHelper;
 use Application\Models\Song;
 
 class SongController
@@ -17,11 +18,11 @@ class SongController
     {
         $songs = $this->model->getAll();
         $amount_of_songs = $this->model->count();
-        require ROOT . 'view/_templates/header.php';
-        require ROOT . 'view/songs/index.php';
-        require ROOT . 'view/_templates/footer.php';
-
-
+        $params = array(
+            'songs' => $songs,
+            'amount_of_songs' => $amount_of_songs
+        );
+        PageHelper::displayPage("songs/index.php", $params);
     }
 
     public function addSong()
@@ -31,6 +32,15 @@ class SongController
             $this->model->track = $_POST["track"];
             $this->model->link = $_POST["link"];
             $this->model->save();
+        }
+
+        header('location: ' . URL . 'song/index');
+    }
+
+    public function deleteSong($song_id)
+    {
+        if (isset($song_id)) {
+            $this->model->delete($song_id);
         }
 
         header('location: ' . URL . 'song/index');
@@ -53,15 +63,12 @@ class SongController
     {
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
-
-            require ROOT . 'view/_templates/header.php';
-            require ROOT . 'view/songs/edit.php';
-            require ROOT . 'view/_templates/footer.php';
+            PageHelper::displayPage("songs/edit.php", $params = array('song' => $song));
         } else {
             header('location: ' . URL . 'song/index');
         }
     }
-
+/*
     public function ajaxGetStats()
     {
         $amount_of_songs = $this->model->getAmountOfSongs();
@@ -69,5 +76,5 @@ class SongController
         // simply echo out something. A supersimple API would be possible by echoing JSON here
         echo $amount_of_songs;
     }
-
+*/
 }

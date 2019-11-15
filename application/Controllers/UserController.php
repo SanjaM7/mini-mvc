@@ -2,6 +2,7 @@
 
 namespace Application\Controllers;
 
+use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
 use Application\Models\User;
 
@@ -16,18 +17,14 @@ class UserController
 
     public function register()
     {
-        $errors = SessionHelper::getAndClearError();
-        require ROOT . 'view/_templates/header.php';
-        require ROOT . 'view/user/register.php';
-        require ROOT . 'view/_templates/footer.php';
+        SessionHelper::requireUnauthorized();
+        PageHelper::displayPage("user/register.php");
     }
 
     public function logIn()
     {
-        $errors = SessionHelper::getAndClearError();
-        require ROOT . 'view/_templates/header.php';
-        require ROOT . 'view/user/log_in.php';
-        require ROOT . 'view/_templates/footer.php';
+        SessionHelper::requireUnauthorized();
+        PageHelper::displayPage("user/log_in.php");
     }
 
     public function postRegister()
@@ -43,8 +40,7 @@ class UserController
             $errors = $this->model->validateRegisterParams($password, $passwordRepeat);
 
             if($errors){
-                SessionHelper::setErrors($errors);
-                header('location: ' . URL . 'user/register');
+                PageHelper::displayPage("user/register.php", $params = array('errors' => $errors));
                 return;
             }
 
@@ -56,8 +52,7 @@ class UserController
             }
 
             if($errors){
-                SessionHelper::setErrors($errors);
-                header('location: ' . URL . 'user/register');
+                PageHelper::displayPage("user/register.php", $params = array('errors' => $errors));
                 return;
             }
 
@@ -75,8 +70,7 @@ class UserController
             $errors = $this->model->validateLogInParams($password);
 
             if($errors){
-                SessionHelper::setErrors($errors);
-                header('location: ' . URL . 'user/logIn');
+                PageHelper::displayPage("user/log_in.php", $params = array('errors' => $errors));
                 return;
             }
 
@@ -85,17 +79,23 @@ class UserController
             if(!isset($this->model->email)){
                 $errors[] = "Username does not exists";
             } elseif (!password_verify($password, $this->model->hashedPassword)){
-                $errors[] = "Inccorect password";
+                $errors[] = "Incorrect password";
             }
 
             if($errors){
-                SessionHelper::setErrors($errors);
-                header('location: ' . URL . 'user/logIn');
+                PageHelper::displayPage("user/log_in.php", $params = array('errors' => $errors));
                 return;
             }
 
             SessionHelper::logIn($this->model->id);
+
             header('location: ' . URL . 'home/index');
         }
+    }
+
+    public function postLogOut()
+    {
+        SessionHelper::logOut();
+        header('location: ' . URL . 'home/index');
     }
 }

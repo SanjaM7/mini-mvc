@@ -23,13 +23,22 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
+            <?php /** @var  $isLoggedIn */?>
             <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>">home</a></li>
+            <?php if ($isLoggedIn) : ?>
             <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampleone">subpage</a></li>
             <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage 2</a></li>
             <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a></li>
+            <?php endif; ?>
         </ul>
+        <?php if (!$isLoggedIn) : ?>
         <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Register</a>
-        <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0" type="submit">Log In</a>
+        <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Log In</a>
+        <?php else : ?>
+        <form action="<?php echo URL; ?>user/postLogOut" method="POST">
+            <button class="btn btn-danger my-2 my-sm-0" name="submit_log_out" type="submit">Log Out</button>
+        </form>
+        <?php endif; ?>
     </div>
 </nav>
 

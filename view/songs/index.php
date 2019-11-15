@@ -1,4 +1,7 @@
 <div class="container">
+    <?php if(!empty($params)) : ?>
+    <?php $songs= $params['songs']  ?>
+    <?php $amount_of_songs= $params['amount_of_songs']  ?>
     <h2>You are in the View: application/view/song/index.php (everything in this box comes from that file)</h2>
     <!-- add song form -->
     <div class="box">
@@ -19,11 +22,12 @@
         <div>
             <?php echo $amount_of_songs; ?>
         </div>
-        <h3>Amount of songs (via AJAX)</h3>
+        <!--<h3>Amount of songs (via AJAX)</h3>
         <div>
             <button id="javascript-ajax-button">Click here to get the amount of songs via Ajax (will be displayed in #javascript-ajax-result-box)</button>
             <div id="javascript-ajax-result-box"></div>
         </div>
+        -->
         <h3>List of songs (data from first model)</h3>
         <table>
             <thead style="background-color: #ddd; font-weight: bold;">
@@ -54,4 +58,5 @@
             </tbody>
         </table>
     </div>
+    <?php endif; ?>
 </div>

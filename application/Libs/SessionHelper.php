@@ -25,8 +25,32 @@ class SessionHelper
         $_SESSION['id'] = $id;
     }
 
+    public static function logOut()
+    {
+        $_SESSION['id'] = null;
+    }
+
+    public static function isUserLoggedIn()
+    {
+        return isset($_SESSION['id']);
+    }
+
     public static function getUserId()
     {
         return $_SESSION['id'];
+    }
+
+    public static function requireAuthorized()
+    {
+        if(!self::isUserLoggedIn()){
+            header('location: ' . URL . 'user/logIn');
+        }
+    }
+
+    public static function requireUnauthorized()
+    {
+        if(self::isUserLoggedIn()){
+            header('location: ' . URL . 'home/index');
+        }
     }
 }
