@@ -35,8 +35,8 @@
                     <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage
                         2</a>
                 </li>
-                <?php /** @var  $isAdmin */ ?>
-                <?php if(!$isAdmin) : ?>
+                <?php /** @var  $isDj*/ ?>
+                <?php if($isDj) : ?>
                 <li>
                     <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a>
                 </li>

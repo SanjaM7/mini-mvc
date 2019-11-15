@@ -39,9 +39,16 @@ class SessionHelper
             header('location: ' . URL . 'home/index');
         }
     }
+    public static function isDj()
+    {
+        return ($_SESSION['role_id'] == 1 ? true : false);
+    }
+
 
     public static function isAdmin()
     {
         return ($_SESSION['role_id'] == 2 ? true : false);
     }
+
+
 }
