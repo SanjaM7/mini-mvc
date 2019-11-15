@@ -3,6 +3,7 @@
 namespace Application\Controllers;
 
 use Application\Libs\PageHelper;
+use Application\Libs\SessionHelper;
 use Application\Models\Song;
 
 class SongController
@@ -16,7 +17,9 @@ class SongController
 
     public function index()
     {
-        $songs = $this->model->getAll();
+        $user_id = SessionHelper::getUserId();
+        $songs = $this->model->getWhere('user_id', $user_id);
+
         $amount_of_songs = $this->model->count();
         $params = array(
             'songs' => $songs,
@@ -27,7 +30,9 @@ class SongController
 
     public function addSong()
     {
+        $user_id = SessionHelper::getUserId();
         if (isset($_POST["submit_add_song"])) {
+            $this->model->user_id = $user_id;
             $this->model->artist = $_POST["artist"];
             $this->model->track = $_POST["track"];
             $this->model->link = $_POST["link"];

@@ -4,30 +4,16 @@ namespace Application\Libs;
 
 class SessionHelper
 {
-    public static function setErrors(array $errors)
-    {
-        $_SESSION['errors'] = $errors;
-    }
-
-    public static function getAndClearError()
-    {
-        $errors = array();
-        if(isset($_SESSION['errors'])){
-            $errors = $_SESSION['errors'];
-            $_SESSION['errors'] = null;
-        }
-
-        return $errors;
-    }
-
-    public static function logIn($id)
+    public static function logIn($id, $role_id)
     {
         $_SESSION['id'] = $id;
+        $_SESSION['role_id'] = $role_id;
     }
 
     public static function logOut()
     {
         $_SESSION['id'] = null;
+        $_SESSION['role_id'] = null;
     }
 
     public static function isUserLoggedIn()
@@ -52,5 +38,10 @@ class SessionHelper
         if(self::isUserLoggedIn()){
             header('location: ' . URL . 'home/index');
         }
+    }
+
+    public static function isAdmin()
+    {
+        return ($_SESSION['role_id'] == 2 ? true : false);
     }
 }

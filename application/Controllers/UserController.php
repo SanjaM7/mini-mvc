@@ -87,7 +87,7 @@ class UserController
                 return;
             }
 
-            SessionHelper::logIn($this->model->id);
+            SessionHelper::logIn($this->model->id, $this->model->role_id);
 
             header('location: ' . URL . 'home/index');
         }

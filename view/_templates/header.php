@@ -17,27 +17,40 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Mini-mvc</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <?php /** @var  $isLoggedIn */?>
+            <?php /** @var  $isLoggedIn */ ?>
             <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>">home</a></li>
             <?php if ($isLoggedIn) : ?>
-            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampleone">subpage</a></li>
-            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage 2</a></li>
-            <li><a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a></li>
+                <li>
+                    <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2"
+                       href="<?php echo URL; ?>home/exampleone">subpage</a>
+                </li>
+                <li>
+                    <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage
+                        2</a>
+                </li>
+                <?php /** @var  $isAdmin */ ?>
+                <?php if(!$isAdmin) : ?>
+                <li>
+                    <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a>
+                </li>
+                <?php endif; ?>
             <?php endif; ?>
         </ul>
         <?php if (!$isLoggedIn) : ?>
-        <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Register</a>
-        <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Log In</a>
+            <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Register</a>
+            <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Log
+                In</a>
         <?php else : ?>
-        <form action="<?php echo URL; ?>user/postLogOut" method="POST">
-            <button class="btn btn-danger my-2 my-sm-0" name="submit_log_out" type="submit">Log Out</button>
-        </form>
+            <form action="<?php echo URL; ?>user/postLogOut" method="POST">
+                <button class="btn btn-danger my-2 my-sm-0" name="submit_log_out" type="submit">Log Out</button>
+            </form>
         <?php endif; ?>
     </div>
 </nav>

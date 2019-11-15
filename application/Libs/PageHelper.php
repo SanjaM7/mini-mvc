@@ -7,7 +7,7 @@ class PageHelper
     public static function displayPage($viewName, $params = array())
     {
         $isLoggedIn = SessionHelper::isUserLoggedIn();
-        $errors = SessionHelper::getAndClearError();
+        $isAdmin = SessionHelper::isAdmin();
         // load views
         require ROOT . 'view/_templates/header.php';
         require ROOT . 'view/' . $viewName;
