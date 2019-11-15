@@ -2,10 +2,9 @@
     <?php if(!empty($params)) : ?>
     <?php $songs= $params['songs']  ?>
     <?php $amount_of_songs= $params['amount_of_songs']  ?>
-    <h2>You are in the View: application/view/song/index.php (everything in this box comes from that file)</h2>
     <!-- add song form -->
-    <div class="box">
         <h3>Add a song</h3>
+    <div class="box">
         <form action="<?php echo URL; ?>song/addSong" method="POST">
             <label>Artist</label>
             <input type="text" name="artist" value="" required />

@@ -41,6 +41,12 @@
                     <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a>
                 </li>
                 <?php endif; ?>
+                <?php /** @var  $isAdmin*/ ?>
+                <?php if($isAdmin) : ?>
+                    <li>
+                        <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>index">roles</a>
+                    </li>
+                <?php endif; ?>
             <?php endif; ?>
         </ul>
         <?php if (!$isLoggedIn) : ?>
