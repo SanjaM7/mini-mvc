@@ -8,7 +8,6 @@ class User extends Model
     public $username;
     public $email;
     public $hashedPassword;
-    public $role_id;
 
     public function __construct(){
         parent::__construct('users');
