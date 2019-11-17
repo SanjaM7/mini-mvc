@@ -4,6 +4,7 @@ namespace Application\Controllers;
 
 use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
+use Application\Libs\PermissionHelper;
 use Application\Models\Song;
 
 class SongController
@@ -13,6 +14,7 @@ class SongController
     public function __construct()
     {
         $this->model = new Song();
+        PermissionHelper::requireDj();
     }
 
     public function index()
@@ -20,66 +22,74 @@ class SongController
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
 
-        $amount_of_songs = $this->model->count();
+        $count_of_songs = $this->model->count();
         $params = array(
             'songs' => $songs,
-            'amount_of_songs' => $amount_of_songs
+            'count_of_songs' => $count_of_songs
         );
-        PageHelper::displayPage("songs/index.php", $params);
+        PageHelper::displayPage('songs/index.php', $params);
     }
 
     public function addSong()
     {
         $user_id = SessionHelper::getUserId();
-        if (isset($_POST["submit_add_song"])) {
+        if (isset($_POST['submit_add_song'])) {
+            $this->model->artist = $_POST['artist'];
+            $this->model->track = $_POST['track'];
+            $this->model->link = $_POST['link'];
             $this->model->user_id = $user_id;
-            $this->model->artist = $_POST["artist"];
-            $this->model->track = $_POST["track"];
-            $this->model->link = $_POST["link"];
             $this->model->save();
         }
 
-        header('location: ' . URL . 'song/index');
+        PageHelper::redirect('song/index');
     }
 
     public function deleteSong($song_id)
     {
         if (isset($song_id)) {
-            $this->model->delete($song_id);
+            $song = $this->model->get($song_id);
+            $user_id = SessionHelper::getUserId();
+            if($song->user_id == $user_id){
+                $this->model->delete($song_id);
+            } else {
+                PageHelper::redirect('song/index');
+            }
         }
 
-        header('location: ' . URL . 'song/index');
-    }
-
-    public function updateSong()
-    {
-        if (isset($_POST["submit_update_song"])) {
-            $this->model->id = $_POST['song_id'];
-            $this->model->artist = $_POST["artist"];
-            $this->model->track = $_POST['track'];
-            $this->model->link = $_POST['link'];
-            $this->model->update();
-        }
-
-        header('location: ' . URL . 'song/index');
+        PageHelper::redirect('song/index');
     }
 
     public function editSong($song_id)
     {
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
-            PageHelper::displayPage("songs/edit.php", $params = array('song' => $song));
+
+            $user_id = SessionHelper::getUserId();
+            if($song->user_id == $user_id){
+                PageHelper::displayPage('songs/edit.php', $params = array('song' => $song));
+            } else {
+                PageHelper::redirect('song/index');
+            }
         } else {
-            header('location: ' . URL . 'song/index');
+            PageHelper::redirect('song/index');
         }
     }
-/*
-    public function ajaxGetStats()
-    {
-        $amount_of_songs = $this->model->getAmountOfSongs();
 
-        // simply echo out something. A supersimple API would be possible by echoing JSON here
-        echo $amount_of_songs;
+    public function updateSong()
+    {
+        $user_id = SessionHelper::getUserId();
+        if (isset($_POST['submit_update_song'])) {
+            $this->model->id = $_POST['song_id'];
+            $this->model->artist = $_POST['artist'];
+            $this->model->track = $_POST['track'];
+            $this->model->link = $_POST['link'];
+            $this->model->user_id = $user_id;
+            $this->model->update();
+        }
+
+        PageHelper::redirect('song/index');
     }
-*/
+
+
+
 }

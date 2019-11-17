@@ -2,23 +2,26 @@
 
 namespace Application\Controllers;
 
-use Application\Libs\SessionHelper;
 use Application\Libs\PageHelper;
+use Application\Libs\PermissionHelper;
+
 
 class HomeController
 {
     public function index()
     {
-        PageHelper::displayPage("home/index.php");
+        PageHelper::displayPage('home/index.php');
     }
 
     public function exampleOne()
     {
-        PageHelper::displayPage("home/example_one.php");
+        PermissionHelper::requireAuthorized();
+        PageHelper::displayPage('home/example_one.php');
     }
 
     public function exampleTwo()
     {
-        PageHelper::displayPage("home/example_two.php");
+        PermissionHelper::requireAuthorized();
+        PageHelper::displayPage('home/example_two.php');
     }
 }

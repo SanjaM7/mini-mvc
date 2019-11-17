@@ -8,6 +8,6 @@ class ProblemController
 {
     public function index()
     {
-        PageHelper::displayPage("problem/index.php");
+        PageHelper::displayPage('problem/index.php');
     }
 }

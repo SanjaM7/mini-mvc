@@ -38,7 +38,7 @@ class Application
             // if so, then load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
             //require APP . 'Controllers/' . $this->url_controller . '.php';
-            $controllerClassName = "Application\\Controllers\\" . $this->url_controller;
+            $controllerClassName = 'Application\\Controllers\\' . $this->url_controller;
             $this->url_controller = new $controllerClassName();
 
             // check for method: does such a method exist in the controller ?
@@ -81,7 +81,7 @@ class Application
             // Put URL parts into according properties
             // By the way, the syntax here is just a short form of if/else, called "Ternary Operators"
             // @see http://davidwalsh.name/php-shorthand-if-else-ternary-operators
-            $this->url_controller = isset($url[0]) ? ucfirst($url[0]) . "Controller" : null;
+            $this->url_controller = isset($url[0]) ? ucfirst($url[0]) . 'Controller' : null;
             $this->url_action = isset($url[1]) ? $url[1] : null;
 
             // Remove controller and action from the split URL
