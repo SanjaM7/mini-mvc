@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css">
 </head>
 <body>
+<div id="page-container">
+    <div id="content-wrap">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="#">Mini-mvc</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
@@ -52,8 +54,15 @@
                 <?php endif; ?>
             <?php endif; ?>
         </ul>
+        <form action="<?php echo URL; ?>song/searchSong" method="POST" class="form-inline my-2 my-lg-0">
+            <div style="width:300px;" class="mr-sm-2">
+                <input type="text" name="searchName" class="form-control" placeholder="Search song" style="width:100%;">
+            </div>
+            <button class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit_search_songs">Search</button>
+        </form>
         <?php if (!$isLoggedIn) : ?>
-            <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Register</a>
+            <a href="<?php echo URL; ?>user/register" class="btn btn-secondary my-2 my-sm-0 mr-sm-2"
+               type="submit">Register</a>
             <a href="<?php echo URL; ?>user/logIn" class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Log
                 In</a>
         <?php else : ?>

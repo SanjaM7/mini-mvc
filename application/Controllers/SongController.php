@@ -14,14 +14,11 @@ class SongController
     public function __construct()
     {
         $this->model = new Song();
-        PermissionHelper::requireDj();
     }
 
     public function index()
     {
-        $search = $this->model->search('emi', 'artist', 'track');
-        die(var_dump($search));
-
+        PermissionHelper::requireDj();
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
 
@@ -29,13 +26,29 @@ class SongController
         $params = array(
             'songs' => $songs,
             'count_of_songs' => $count_of_songs,
-            'search' => $search
         );
         PageHelper::displayPage('songs/index.php', $params);
     }
 
+    public function searchSong(){
+        $searchName = $_POST['searchName'];
+        $searches = $this->model->search($searchName, 'artist', 'track');
+
+        if(empty($searchName) && empty($searches)){
+            PageHelper::redirectBack();
+            return;
+        }
+
+        $params = array(
+            'searches' => $searches,
+            'searchName' => $searchName
+        );
+        PageHelper::displayPage('songs/search.php', $params);
+    }
+
     public function addSong()
     {
+        PermissionHelper::requireDj();
         $user_id = SessionHelper::getUserId();
         if (isset($_POST['submit_add_song'])) {
             $this->model->artist = $_POST['artist'];
@@ -50,6 +63,7 @@ class SongController
 
     public function deleteSong($song_id)
     {
+        PermissionHelper::requireDj();
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
             $user_id = SessionHelper::getUserId();
@@ -65,6 +79,7 @@ class SongController
 
     public function editSong($song_id)
     {
+        PermissionHelper::requireDj();
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
 
@@ -81,6 +96,7 @@ class SongController
 
     public function updateSong()
     {
+        PermissionHelper::requireDj();
         $user_id = SessionHelper::getUserId();
         if (isset($_POST['submit_update_song'])) {
             $this->model->id = $_POST['song_id'];

@@ -35,10 +35,6 @@ service apache2 restart
 # install git
 sudo apt-get -y install git
 
-# git clone MINI
-# ovo nema potrebe jer vec imamo u folderu koji serujemo
-#sudo git clone https://git.quantox.tech/sanja.mitrovic/mini-mvc.git "/var/www/${PROJECTFOLDER}"
-
 # install Composer (not necessary by default)
 curl -s https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
@@ -54,7 +50,7 @@ sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_insta
 sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_03-create-table-users.sql"
 sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_02-create-table-roles.sql"
 sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_04-seeding-tables-users-roles.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_05-create-table-songs.sql
+sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_05-create-table-songs.sql"
 sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_06-seeding-table-songs.sql"
 
 sudo mysql -h "localhost" -u "root" -e "DROP USER mini@localhost;CREATE USER mini@localhost;GRANT ALL PRIVILEGES ON *.* To mini@localhost IDENTIFIED BY '123456';FLUSH PRIVILEGES;"

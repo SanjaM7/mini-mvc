@@ -16,12 +16,6 @@ class Model
         try {
             $this->openDatabaseConnection();
         } catch (PDOException $e) {
-/*            var_dump(DB_TYPE .
-                ':host=' . DB_HOST .
-                ';dbname=' . DB_NAME .
-                ';charset=' . DB_CHARSET,
-                DB_USER,
-                DB_PASS);*/
             exit('Database connection could not be established.');
         }
         $this->table = $table;
@@ -188,6 +182,9 @@ class Model
 
     public function search($searchName, $first, $second)
     {
+        if(empty($searchName)){
+            return array();
+        }
         $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
         $stmt = $this->db->prepare($sql);
         $params = array(

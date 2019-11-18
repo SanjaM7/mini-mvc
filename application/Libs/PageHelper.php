@@ -21,4 +21,10 @@ class PageHelper
     {
         header('location: ' . URL . $url);
     }
+
+    public static function redirectBack()
+    {
+        header('location: ' . $_SERVER['HTTP_REFERER']);
+    }
+
 }
