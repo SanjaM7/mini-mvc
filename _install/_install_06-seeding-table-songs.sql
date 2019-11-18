@@ -1,6 +1,6 @@
-SET GLOBAL FOREIGN_KEY_CHECKS=0;
-INSERT INTO `mini`.`songs` (`id`, `artist`, `track`, `link`,`user_id`) VALUES
-(1, 'Dena', 'Cash, Diamond Ring, Swimming Pools', 'http://www.youtube.com/watch?v=r4CDc9yCAqE', 1),
+use mini;
+INSERT INTO `songs` (`id`, `artist`, `track`, `link`,`user_id`) VALUES
+(1, 'Dena', 'Cash, Diamond Ring, Swimming Pools', 'http://www.youtube.com/watch?v=r4CDc9yCAqE',1),
 (2, 'Jessy Lanza', 'Kathy Lee', 'http://vimeo.com/73455369',1),
 (3, 'The Orwells', 'In my Bed (live)', 'http://www.youtube.com/watch?v=8tA_2qCGnmE',1),
 (4, 'L''Orange & Stik Figa', 'Smoke Rings', 'https://www.youtube.com/watch?v=Q5teohMyGEY',1),

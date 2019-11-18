@@ -32,6 +32,7 @@ class Application
             $page = new HomeController();
             $page->index();
 
+            // to preimenovati u class_exists()
         } elseif (file_exists(APP . 'Controllers/' . $this->url_controller . '.php')) {
             // here we did check for controller: does such a controller exist ?
 

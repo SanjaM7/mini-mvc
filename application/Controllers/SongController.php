@@ -19,13 +19,17 @@ class SongController
 
     public function index()
     {
+        $search = $this->model->search('emi', 'artist', 'track');
+        die(var_dump($search));
+
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
 
         $count_of_songs = $this->model->count();
         $params = array(
             'songs' => $songs,
-            'count_of_songs' => $count_of_songs
+            'count_of_songs' => $count_of_songs,
+            'search' => $search
         );
         PageHelper::displayPage('songs/index.php', $params);
     }

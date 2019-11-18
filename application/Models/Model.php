@@ -16,6 +16,12 @@ class Model
         try {
             $this->openDatabaseConnection();
         } catch (PDOException $e) {
+/*            var_dump(DB_TYPE .
+                ':host=' . DB_HOST .
+                ';dbname=' . DB_NAME .
+                ';charset=' . DB_CHARSET,
+                DB_USER,
+                DB_PASS);*/
             exit('Database connection could not be established.');
         }
         $this->table = $table;
@@ -73,12 +79,12 @@ class Model
 
     public function get($id)
     {
-        return $this->getFirstWhere("id", $id);
+        return $this->getFirstWhere('id', $id);
     }
 
     public function getAll()
     {
-        return $this->getWhere("1", "1");
+        return $this->getWhere('1', '1');
     }
 
     public function exists($key, $value)
@@ -178,6 +184,19 @@ class Model
         $stmt->execute($params);
         $affectedRows = $stmt->rowCount();
         return $affectedRows;
+    }
+
+    public function search($searchName, $first, $second)
+    {
+        $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
+        $stmt = $this->db->prepare($sql);
+        $params = array(
+            ':searchName' => "%" . $searchName . "%",
+            ':searchName' => "%" . $searchName . "%"
+        );
+        $stmt->execute($params);
+        $result = $stmt->fetchAll(\PDO::FETCH_CLASS, get_called_class());
+        return $result;
     }
 }
 

@@ -5,7 +5,10 @@ namespace Application\Controllers;
 use Application\Libs\PageHelper;
 use Application\Libs\PermissionHelper;
 
-
+/**
+ * Class HomeController
+ * @package Application\Controllers
+ */
 class HomeController
 {
     public function index()

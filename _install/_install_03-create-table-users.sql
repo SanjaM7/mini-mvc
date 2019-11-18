@@ -1,3 +1,5 @@
+use mini;
+-- //dodaj to u sve fajlove
 -- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: mini
@@ -16,32 +18,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `songs`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `songs`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `songs` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `artist` text NOT NULL,
-  `track` text NOT NULL,
-  `link` text,
-  `user_id` int(11) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `hashedPassword` varchar(255) NOT NULL,
+  `role_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `fk_song-user_idx` (`user_id`),
-  CONSTRAINT `fk_song_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_user_role_idx` (`role_id`),
+  CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `songs`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `songs` WRITE;
-/*!40000 ALTER TABLE `songs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `songs` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-16 14:26:58
+-- Dump completed on 2019-11-16 14:21:59
