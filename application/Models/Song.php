@@ -8,11 +8,10 @@ class Song extends Model
     public $artist;
     public $track;
     public $link;
+    public $user_id;
 
     public function __construct(){
         parent::__construct('songs');
 
     }
-
-
 }

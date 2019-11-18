@@ -26,29 +26,13 @@ class SessionHelper
         return $_SESSION['id'];
     }
 
-    public static function requireAuthorized()
-    {
-        if(!self::isUserLoggedIn()){
-            header('location: ' . URL . 'user/logIn');
-        }
-    }
-
-    public static function requireUnauthorized()
-    {
-        if(self::isUserLoggedIn()){
-            header('location: ' . URL . 'home/index');
-        }
-    }
     public static function isDj()
     {
         return ($_SESSION['role_id'] == 1 ? true : false);
     }
 
-
     public static function isAdmin()
     {
         return ($_SESSION['role_id'] == 2 ? true : false);
     }
-
-
 }
