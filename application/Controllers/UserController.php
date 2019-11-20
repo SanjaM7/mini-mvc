@@ -7,8 +7,9 @@ use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Role;
 use Application\Models\User;
+use Illuminate\Routing\Controller;
 
-class UserController
+class UserController extends Controller
 {
     public $model;
 
@@ -46,7 +47,7 @@ class UserController
             );
             PageHelper::displayPage('users/edit.php', $params);
         } else {
-            PageHelper::redirect('user/index');
+            return PageHelper::redirect('user/index');
         }
     }
 
@@ -59,7 +60,7 @@ class UserController
             $this->model->update();
         }
 
-        PageHelper::redirect('user/index');
+        return PageHelper::redirect('user/index');
     }
 
     public function register()
@@ -104,7 +105,8 @@ class UserController
             }
 
             $this->model->save();
-            PageHelper::redirect('users/log_in');
+
+            return PageHelper::redirect('user/logIn');
         }
     }
 
@@ -139,7 +141,7 @@ class UserController
 
             SessionHelper::logIn($this->model->id, $this->model->role_id);
 
-            PageHelper::redirect('home/index');
+            return PageHelper::redirect('/');
         }
     }
 
@@ -147,6 +149,6 @@ class UserController
     {
         PermissionHelper::requireAuthorized();
         SessionHelper::logOut();
-        PageHelper::redirect('home/index');
+        return PageHelper::redirect('/');
     }
 }

@@ -4,12 +4,13 @@ namespace Application\Controllers;
 
 use Application\Libs\PageHelper;
 use Application\Libs\PermissionHelper;
+use Illuminate\Routing\Controller;
 
 /**
  * Class HomeController
  * @package Application\Controllers
  */
-class HomeController
+class HomeController extends Controller
 {
     public function index()
     {

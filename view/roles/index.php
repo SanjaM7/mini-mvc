@@ -49,12 +49,12 @@
                         </td>
                         <td>
                             <?php if (!$role->deleted) : ?>
-                                <a href="<?php echo URL . 'role/softDeleteRole/' . htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8'); ?>">soft
+                                <a href="<?php echo URL . 'role/' . htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8') . '/softDeleteRole'; ?>">soft
                                     delete</a>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="<?php echo URL . 'role/editRole/' . htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8'); ?>">edit</a>
+                            <a href="<?php echo URL . 'role/' . htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8') . '/editRole'; ?>">edit</a>
                         </td>
                     </tr>
                 <?php } ?>

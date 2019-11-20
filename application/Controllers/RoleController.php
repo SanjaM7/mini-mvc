@@ -5,8 +5,9 @@ namespace Application\Controllers;
 use Application\Libs\PageHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Role;
+use Illuminate\Routing\Controller;
 
-class RoleController
+class RoleController extends Controller
 {
     public $model;
 
@@ -34,7 +35,7 @@ class RoleController
             $this->model->save();
         }
 
-        PageHelper::redirect('role/index');
+        return PageHelper::redirect('role/index');
     }
 
     public function softDeleteRole($role_id)
@@ -46,7 +47,7 @@ class RoleController
             }
         }
 
-        PageHelper::redirect('role/index');
+        return PageHelper::redirect('role/index');
     }
 
     public function editRole($role_id)
@@ -55,7 +56,7 @@ class RoleController
             $role = $this->model->get($role_id);
             PageHelper::displayPage('roles/edit.php', $params = array('role' => $role));
         } else {
-            PageHelper::redirect('role/index');
+            return PageHelper::redirect('role/index');
         }
     }
 
@@ -67,6 +68,6 @@ class RoleController
             $this->model->update();
         }
 
-        PageHelper::redirect('role/index');
+        return PageHelper::redirect('role/index');
     }
 }

@@ -3,8 +3,9 @@
 namespace Application\Controllers;
 
 use Application\Libs\PageHelper;
+use Illuminate\Routing\Controller;
 
-class ProblemController
+class ProblemController extends Controller
 {
     public function index()
     {

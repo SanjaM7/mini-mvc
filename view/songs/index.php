@@ -52,10 +52,10 @@
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a href="<?php echo URL . 'song/deleteSong/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8'); ?>">delete</a>
+                                <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/deleteSong'; ?>">delete</a>
                             </td>
                             <td>
-                                <a href="<?php echo URL . 'song/editSong/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8'); ?>">edit</a>
+                                <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/editSong'; ?>">edit</a>
                             </td>
                         </tr>
                     <?php } ?>

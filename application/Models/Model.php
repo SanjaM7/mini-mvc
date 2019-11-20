@@ -5,7 +5,7 @@ namespace Application\Models;
 use PDO;
 use PDOException;
 
-class Model
+abstract class Model
 {
     /*** @var PDO */
     public $db;

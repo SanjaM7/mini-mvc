@@ -16,21 +16,21 @@ class PermissionHelper
     public static function requireUnauthorized()
     {
         if(SessionHelper::isUserLoggedIn()){
-            header('location: ' . URL . 'home/index');
+            header('location: ' . URL . '/');
         }
     }
 
     public static function requireAdmin()
     {
         if(!SessionHelper::isAdmin()){
-            header('location: ' . URL . 'home/index');
+            header('location: ' . URL . '/');
         }
     }
 
     public static function requireDj()
     {
         if(!SessionHelper::isDj()){
-            header('location: ' . URL . 'home/index');
+            header('location: ' . URL . '/');
         }
     }
 }

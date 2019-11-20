@@ -1,6 +1,11 @@
 <?php
 
-use Application\Core\Application;
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Routing\Router;
+use Illuminate\Routing\UrlGenerator;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -38,11 +43,25 @@ require ROOT . 'config/config.php';
 // If you want to load pdoDebug via Composer, then have a look here: https://github.com/panique/pdo-debug
 require APP . 'Libs/Helper.php';
 
-// load application class
-//require APP . 'Core/Application.php';
-//require APP . 'Models/Model.php';
-//require APP . 'Models/Song.php';
+// Create a service container
+$container = new Container;
+// Create a request from server variables, and bind it to the container; optional
+$request = Request::capture();
+$container->instance('Illuminate\Http\Request', $request);
+// Using Illuminate/Events/Dispatcher here (not required); any implementation of
+// Illuminate/Contracts/Event/Dispatcher is acceptable
+$events = new Dispatcher($container);
 
+// Create the router instance
+$router = new Router($events, $container);
 
-// start the application
-$app = new Application();
+// Load the routes
+require_once ROOT . 'routes/routes.php';
+// Create the redirect instance
+$redirect = new Redirector(new UrlGenerator($router->getRoutes(), $request));
+
+// Dispatch the request through the router
+$response = $router->dispatch($request);
+// Send the response back to the browser
+$response->send();
+

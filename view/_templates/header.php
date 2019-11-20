@@ -6,11 +6,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- JS -->
-    <!-- please note: The JavaScript files are loaded in the footer to speed up page construction -->
-    <!-- See more here: http://stackoverflow.com/q/2105327/1114320 -->
-
-    <!-- CSS -->
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sandstone/bootstrap.min.css">
 </head>
@@ -40,7 +35,7 @@
                 <?php /** @var  $isDj */ ?>
                 <?php if ($isDj) : ?>
                     <li>
-                        <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song">songs</a>
+                        <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>song/index">songs</a>
                     </li>
                 <?php endif; ?>
                 <?php /** @var  $isAdmin */ ?>

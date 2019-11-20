@@ -39,7 +39,7 @@
                                         <?php if (isset($user->role_id)) echo htmlspecialchars($role->role, ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo URL . 'user/editUserRole/' . htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8'); ?>">edit</a>
+                                        <a href="<?php echo URL . 'user/' . htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8') . '/editUserRole'; ?>">edit</a>
                                     </td>
                                 <?php endif; ?>
                             <?php endforeach; ?>

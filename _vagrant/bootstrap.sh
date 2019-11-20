@@ -7,7 +7,8 @@ PROJECTFOLDER='mini-mvc'
 sudo apt-get update
 sudo apt-get -y upgrade
 
-sudo apt-get install -y apache2
+# vec postoji
+#sudo apt-get install -y apache2
 
 # Create project folder, written in 3 single mkdir-statements to make sure this runs everywhere without problems
 #sudo mkdir -p "/var/www"
@@ -15,22 +16,35 @@ sudo apt-get install -y apache2
 
 # setup hosts file
 VHOST=$(cat <<EOF
-<VirtualHost *:80>
-    DocumentRoot "/var/www/${PROJECTFOLDER}/public"
-    <Directory "/var/www/${PROJECTFOLDER}/public">
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
+server {
+    listen 80;
+    root /var/www/mini-mvc/public;
+    index index.php;
+
+    server_name mini-mvc-vagrant.local;
+
+    location / {
+         try_files /$uri /$uri/ /index.php?url=$uri;
+    }
+
+    location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+    }
+
+    location ~ /\.ht {
+         deny all;
+    }
+}
 EOF
 )
-echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
+echo "${VHOST}" > /etc/nginx/sites-available/mini-mvc.conf
 
 # enable mod_rewrite
-sudo a2enmod rewrite
+#sudo a2enmod rewrite
 
 # restart apache
-service apache2 restart
+service nginx restart
 
 # install git
 sudo apt-get -y install git
@@ -46,14 +60,14 @@ sudo chmod -R 777 vendor
 composer update
 
 # run SQL statements from MINI folder
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_01-create-database.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_03-create-table-users.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_02-create-table-roles.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_04-seeding-tables-users-roles.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_05-create-table-songs.sql"
-sudo mysql -h "localhost" -u "root" < "/var/www/${PROJECTFOLDER}/_install/_install_06-seeding-table-songs.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_01-create-database.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_03-create-table-users.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_02-create-table-roles.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_04-seeding-tables-users-roles.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_05-create-table-songs.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_06-seeding-table-songs.sql"
 
-sudo mysql -h "localhost" -u "root" -e "DROP USER mini@localhost;CREATE USER mini@localhost;GRANT ALL PRIVILEGES ON *.* To mini@localhost IDENTIFIED BY '123456';FLUSH PRIVILEGES;"
+sudo mysql -h "localhost" -u "root" -proot -e "DROP USER IF EXISTS mini@localhost;CREATE USER mini@localhost;GRANT ALL PRIVILEGES ON *.* To mini@localhost IDENTIFIED BY '123456';FLUSH PRIVILEGES;"
 
 # put the password into the application's config. This is quite hardcore, but why not :)
 sudo sed -i "s/your_password/${PASSWORD}/" "/var/www/${PROJECTFOLDER}/config/config.php"

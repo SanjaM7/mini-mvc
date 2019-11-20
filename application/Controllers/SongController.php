@@ -6,8 +6,9 @@ use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Song;
+use Illuminate\Routing\Controller;
 
-class SongController
+class SongController extends Controller
 {
     public $model;
 
@@ -35,15 +36,14 @@ class SongController
         $searches = $this->model->search($searchName, 'artist', 'track');
 
         if(empty($searchName) && empty($searches)){
-            PageHelper::redirectBack();
-            return;
+            return PageHelper::redirectBack();
         }
 
         $params = array(
             'searches' => $searches,
             'searchName' => $searchName
         );
-        PageHelper::displayPage('songs/search.php', $params);
+        return PageHelper::displayPage('songs/search.php', $params);
     }
 
     public function addSong()
@@ -58,7 +58,7 @@ class SongController
             $this->model->save();
         }
 
-        PageHelper::redirect('song/index');
+        return PageHelper::redirect('song/index');
     }
 
     public function deleteSong($song_id)
@@ -70,11 +70,11 @@ class SongController
             if($song->user_id == $user_id){
                 $this->model->delete($song_id);
             } else {
-                PageHelper::redirect('song/index');
+                return PageHelper::redirect('song/index');
             }
         }
 
-        PageHelper::redirect('song/index');
+        return PageHelper::redirect('song/index');
     }
 
     public function editSong($song_id)
@@ -87,10 +87,10 @@ class SongController
             if($song->user_id == $user_id){
                 PageHelper::displayPage('songs/edit.php', $params = array('song' => $song));
             } else {
-                PageHelper::redirect('song/index');
+                return PageHelper::redirect('song/index');
             }
         } else {
-            PageHelper::redirect('song/index');
+            return PageHelper::redirect('song/index');
         }
     }
 
@@ -107,9 +107,6 @@ class SongController
             $this->model->update();
         }
 
-        PageHelper::redirect('song/index');
+        return PageHelper::redirect('song/index');
     }
-
-
-
 }

@@ -19,7 +19,9 @@ class PageHelper
 
     public static function redirect($url)
     {
-        header('location: ' . URL . $url);
+        global $redirect;
+        return $redirect->to($url);
+        //header('location: ' . URL . $url);
     }
 
     public static function redirectBack()
