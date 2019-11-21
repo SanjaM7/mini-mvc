@@ -22,7 +22,6 @@ class SongController extends Controller
         PermissionHelper::requireDj();
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
-
         $count_of_songs = $this->model->count();
         $params = array(
             'songs' => $songs,
@@ -32,11 +31,16 @@ class SongController extends Controller
         PageHelper::displayPage('songs/index.php', $params);
     }
 
-    public function searchSong(){
+    public function searchSong()
+    {
+        if (!isset($_POST['searchName'])) {
+            return PageHelper::redirectBack();
+        }
+
         $searchName = $_POST['searchName'];
         $searches = $this->model->search($searchName, 'artist', 'track');
 
-        if(empty($searchName) && empty($searches)){
+        if (empty($searchName) && empty($searches)) {
             return PageHelper::redirectBack();
         }
 
@@ -44,14 +48,15 @@ class SongController extends Controller
             'searches' => $searches,
             'searchName' => $searchName
         );
+
         return PageHelper::displayPage('songs/search.php', $params);
     }
 
     public function addSong()
     {
         PermissionHelper::requireDj();
-        $user_id = SessionHelper::getUserId();
         if (isset($_POST['submit_add_song'])) {
+            $user_id = SessionHelper::getUserId();
             $this->model->artist = $_POST['artist'];
             $this->model->track = $_POST['track'];
             $this->model->link = $_POST['link'];
@@ -60,13 +65,9 @@ class SongController extends Controller
             $minutes = $_POST['minutes'];
             $seconds = $_POST['seconds'];
 
-            $this->model->duration = 60*$minutes + $seconds;
+            $this->model->duration = 60 * $minutes + $seconds;
             $this->model->save();
         }
-
-        //$carbon = new Carbon;
-        //echo $carbon::parse('12-12-2019')->format('Y-m-D mm-ss');
-
 
         return PageHelper::redirect('song/index');
     }
@@ -77,10 +78,8 @@ class SongController extends Controller
         if (isset($song_id)) {
             $song = $this->model->get($song_id);
             $user_id = SessionHelper::getUserId();
-            if($song->user_id == $user_id){
+            if ($song->user_id == $user_id) {
                 $this->model->delete($song_id);
-            } else {
-                return PageHelper::redirect('song/index');
             }
         }
 
@@ -90,25 +89,26 @@ class SongController extends Controller
     public function editSong($song_id)
     {
         PermissionHelper::requireDj();
-        if (isset($song_id)) {
-            $song = $this->model->get($song_id);
-
-            $user_id = SessionHelper::getUserId();
-            if($song->user_id == $user_id){
-                PageHelper::displayPage('songs/edit.php', $params = array('song' => $song));
-            } else {
-                return PageHelper::redirect('song/index');
-            }
-        } else {
+        if (!isset($song_id)) {
             return PageHelper::redirect('song/index');
         }
+
+        $song = $this->model->get($song_id);
+        $user_id = SessionHelper::getUserId();
+
+        if ($song->user_id != $user_id) {
+            return PageHelper::redirect('song/index');
+        }
+
+        PageHelper::displayPage('songs/edit.php', $params = array('song' => $song));
+
     }
 
     public function updateSong()
     {
         PermissionHelper::requireDj();
-        $user_id = SessionHelper::getUserId();
         if (isset($_POST['submit_update_song'])) {
+            $user_id = SessionHelper::getUserId();
             $this->model->id = $_POST['song_id'];
             $this->model->artist = $_POST['artist'];
             $this->model->track = $_POST['track'];
@@ -116,7 +116,7 @@ class SongController extends Controller
             $this->model->user_id = $user_id;
             $minutes = $_POST['minutes'];
             $seconds = $_POST['seconds'];
-            $this->model->duration = $minutes*60 + $seconds;
+            $this->model->duration = $minutes * 60 + $seconds;
             $this->model->update();
         }
 

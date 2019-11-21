@@ -25,6 +25,7 @@ class RoleController extends Controller
             'roles' => $roles,
             'roleIdCountUsers' => $roleIdCountUsers
         );
+
         PageHelper::displayPage('roles/index.php', $params);
     }
 
@@ -40,9 +41,9 @@ class RoleController extends Controller
 
     public function softDeleteRole($role_id)
     {
-        if(isset($role_id)){
+        if (isset($role_id)) {
             $role = $this->model->get($role_id);
-            if($role->deleted != 1){
+            if ($role->deleted != 1) {
                 $this->model->softDelete($role_id);
             }
         }
@@ -52,17 +53,18 @@ class RoleController extends Controller
 
     public function editRole($role_id)
     {
-        if(isset($role_id)) {
+        if (isset($role_id)) {
             $role = $this->model->get($role_id);
             PageHelper::displayPage('roles/edit.php', $params = array('role' => $role));
-        } else {
-            return PageHelper::redirect('role/index');
+            return;
         }
+
+        return PageHelper::redirect('role/index');
     }
 
     public function updateRole()
     {
-        if(isset($_POST['submit_update_role'])){
+        if (isset($_POST['submit_update_role'])) {
             $this->model->id = $_POST['role_id'];
             $this->model->role = $_POST['role'];
             $this->model->update();

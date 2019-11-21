@@ -37,18 +37,19 @@ class UserController extends Controller
     public function editUserRole($user_id)
     {
         PermissionHelper::requireAdmin();
-        if(isset($user_id)){
-            $user = $this->model->get($user_id);
-            $role = new Role();
-            $roles = $role->getAll();
-            $params = array(
-                'user' => $user,
-                'roles' => $roles
-            );
-            PageHelper::displayPage('users/edit.php', $params);
-        } else {
+        if (!isset($user_id)) {
             return PageHelper::redirect('user/index');
         }
+
+        $user = $this->model->get($user_id);
+        $role = new Role();
+        $roles = $role->getAll();
+        $params = array(
+            'user' => $user,
+            'roles' => $roles
+        );
+
+        PageHelper::displayPage('users/edit.php', $params);
     }
 
     public function updateUserRole()
@@ -78,76 +79,85 @@ class UserController extends Controller
     public function postRegister()
     {
         PermissionHelper::requireUnauthorized();
-        if (isset($_POST['submit_register'])) {
-            $this->model->username = $_POST['username'];
-            $this->model->email = $_POST['email'];
-            $password = $_POST['password'];
-            $this->model->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $passwordRepeat = $_POST['passwordRepeat'];
-
-            $errors = $this->model->validateRegisterParams($password, $passwordRepeat);
-
-            if($errors){
-                PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
-                return;
-            }
-
-            if($this->model->exists('username', $this->model->username)){
-                $errors[] = 'Username taken';
-            }
-            if($this->model->exists('email', $this->model->email)){
-                $errors[] = 'Email taken';
-            }
-
-            if($errors){
-                PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
-                return;
-            }
-
-            $this->model->save();
-
-            return PageHelper::redirect('user/logIn');
+        if (!isset($_POST['submit_register'])) {
+            return PageHelper::redirect('user/register');
         }
+
+        $this->model->username = $_POST['username'];
+        $this->model->email = $_POST['email'];
+        $password = $_POST['password'];
+        $this->model->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $passwordRepeat = $_POST['passwordRepeat'];
+
+        $errors = $this->model->validateRegisterParams($password, $passwordRepeat);
+
+        if ($errors) {
+            PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
+            return;
+        }
+
+        if ($this->model->exists('username', $this->model->username)) {
+            $errors[] = 'Username taken';
+        }
+
+        if ($this->model->exists('email', $this->model->email)) {
+            $errors[] = 'Email taken';
+        }
+
+        if ($errors) {
+            PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
+            return;
+        }
+
+        $this->model->save();
+
+        return PageHelper::redirect('user/logIn');
     }
 
     public function postLogIn()
     {
         PermissionHelper::requireUnauthorized();
-        if(isset($_POST['submit_log_in'])){
-            $this->model->username = $_POST['username'];
-            $password = $_POST['password'];
-
-            $errors = $this->model->validateLogInParams($password);
-
-            if($errors){
-                PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
-                return;
-            }
-
-            $this->model = $this->model->getFirstWhere('username', $this->model->username);
-
-            if(!isset($this->model->email)){
-                $errors[] = 'Username does not exists';
-            } elseif (!password_verify($password, $this->model->hashedPassword)){
-                $errors[] = 'Incorrect password';
-            } elseif ($this->model->role_id == 3 ){
-                $errors[] = 'You are blocked';
-            }
-
-            if($errors){
-                PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
-                return;
-            }
-
-            SessionHelper::logIn($this->model->id, $this->model->role_id);
-
-            return PageHelper::redirect('/');
+        if (!isset($_POST['submit_log_in'])) {
+            return PageHelper::redirect('user/logIn');
         }
+
+        $this->model->username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $errors = $this->model->validateLogInParams($password);
+
+        if ($errors) {
+            PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
+            return;
+        }
+
+        $this->model = $this->model->getFirstWhere('username', $this->model->username);
+
+        if (!isset($this->model->email)) {
+            $errors[] = 'Username does not exists';
+        } elseif (!password_verify($password, $this->model->hashedPassword)) {
+            $errors[] = 'Incorrect password';
+        } elseif ($this->model->role_id == 3) {
+            $errors[] = 'You are blocked';
+        }
+
+        if ($errors) {
+            PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
+            return;
+        }
+
+        SessionHelper::logIn($this->model->id, $this->model->role_id);
+
+        return PageHelper::redirect('/');
     }
 
     public function postLogOut()
     {
         PermissionHelper::requireAuthorized();
+        if (!isset($_POST['submit_log_out'])) {
+            return PageHelper::redirectBack();
+        }
+
         SessionHelper::logOut();
         return PageHelper::redirect('/');
     }
