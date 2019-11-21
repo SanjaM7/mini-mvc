@@ -11,6 +11,10 @@
                 <input type="text" name="track" value="" required/>
                 <label>Link</label>
                 <input type="text" name="link" value=""/>
+                <label>Duration</label>
+                <input type="number" name="minutes" value="" style="width:60px" min="0" max="10" step="1" placeholder="min"/>
+                <span> : </span>
+                <input id="hourInput" type="number" name="seconds" min="1" max="59" step="1" onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;" value="" style="width:60px" placeholder="sec"/>
                 <input type="submit" name="submit_add_song" value="Submit"/>
             </form>
         </div>
@@ -36,6 +40,7 @@
                         <td>Artist</td>
                         <td>Track</td>
                         <td>Link</td>
+                        <td>Duration</td>
                         <td>DELETE</td>
                         <td>EDIT</td>
                     </tr>
@@ -51,6 +56,7 @@
                                     <a href="<?php echo htmlspecialchars($song->link, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($song->link, ENT_QUOTES, 'UTF-8'); ?></a>
                                 <?php endif; ?>
                             </td>
+                            <td><?php if (isset($song->duration)) echo htmlspecialchars((int)($song->duration/60) . ':' . ($song->duration%60), ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
                                 <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/deleteSong'; ?>">delete</a>
                             </td>

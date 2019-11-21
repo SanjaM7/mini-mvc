@@ -17,9 +17,15 @@
                        value="<?php echo htmlspecialchars($song->link, ENT_QUOTES, 'UTF-8'); ?>"/>
                 <input type="hidden" name="song_id"
                        value="<?php echo htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8'); ?>"/>
+                <label>Duration</label>
+                <input type="number" name="minutes" style="width:60px" min="0" max="10" step="1"
+                       placeholder="min" value="<?php echo htmlspecialchars((int)($song->duration/60) , ENT_QUOTES, 'UTF-8'); ?>"/>
+                <span> : </span>
+                <input id="hourInput" type="number" name="seconds" min="1" max="59" step="1"
+                       onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;" style="width:60px"
+                       placeholder="sec"/ value="<?php echo htmlspecialchars(($song->duration%60) , ENT_QUOTES, 'UTF-8'); ?>" >
                 <input type="submit" name="submit_update_song" value="Update"/>
             </form>
         </div>
     </div>
 <?php endif; ?>
-

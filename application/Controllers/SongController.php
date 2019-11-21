@@ -28,6 +28,7 @@ class SongController extends Controller
             'songs' => $songs,
             'count_of_songs' => $count_of_songs,
         );
+
         PageHelper::displayPage('songs/index.php', $params);
     }
 
@@ -55,8 +56,17 @@ class SongController extends Controller
             $this->model->track = $_POST['track'];
             $this->model->link = $_POST['link'];
             $this->model->user_id = $user_id;
+
+            $minutes = $_POST['minutes'];
+            $seconds = $_POST['seconds'];
+
+            $this->model->duration = 60*$minutes + $seconds;
             $this->model->save();
         }
+
+        //$carbon = new Carbon;
+        //echo $carbon::parse('12-12-2019')->format('Y-m-D mm-ss');
+
 
         return PageHelper::redirect('song/index');
     }
@@ -104,6 +114,9 @@ class SongController extends Controller
             $this->model->track = $_POST['track'];
             $this->model->link = $_POST['link'];
             $this->model->user_id = $user_id;
+            $minutes = $_POST['minutes'];
+            $seconds = $_POST['seconds'];
+            $this->model->duration = $minutes*60 + $seconds;
             $this->model->update();
         }
 
