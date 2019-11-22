@@ -5,12 +5,14 @@ namespace Application\Controllers;
 use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
+use Application\Libs\ValidationTrait;
 use Application\Models\Role;
 use Application\Models\User;
 use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
+    use ValidationTrait;
     public $model;
 
     public function __construct()
@@ -89,20 +91,7 @@ class UserController extends Controller
         $this->model->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $passwordRepeat = $_POST['passwordRepeat'];
 
-        $errors = $this->model->validateRegisterParams($password, $passwordRepeat);
-
-        if ($errors) {
-            PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
-            return;
-        }
-
-        if ($this->model->exists('username', $this->model->username)) {
-            $errors[] = 'Username taken';
-        }
-
-        if ($this->model->exists('email', $this->model->email)) {
-            $errors[] = 'Email taken';
-        }
+        $errors = $this->validateRegister($password, $passwordRepeat, $this->model);
 
         if ($errors) {
             PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
@@ -110,7 +99,6 @@ class UserController extends Controller
         }
 
         $this->model->save();
-
         return PageHelper::redirect('user/logIn');
     }
 
@@ -124,7 +112,7 @@ class UserController extends Controller
         $this->model->username = $_POST['username'];
         $password = $_POST['password'];
 
-        $errors = $this->model->validateLogInParams($password);
+        $errors = $this->validateLogIn($password, $this->model);
 
         if ($errors) {
             PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
@@ -132,19 +120,6 @@ class UserController extends Controller
         }
 
         $this->model = $this->model->getFirstWhere('username', $this->model->username);
-
-        if (!isset($this->model->email)) {
-            $errors[] = 'Username does not exists';
-        } elseif (!password_verify($password, $this->model->hashedPassword)) {
-            $errors[] = 'Incorrect password';
-        } elseif ($this->model->role_id == 3) {
-            $errors[] = 'You are blocked';
-        }
-
-        if ($errors) {
-            PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
-            return;
-        }
 
         SessionHelper::logIn($this->model->id, $this->model->role_id);
 
