@@ -76,11 +76,8 @@ class SongController extends Controller
     {
         PermissionHelper::requireDj();
         if (isset($song_id)) {
-            $song = $this->model->get($song_id);
             $user_id = SessionHelper::getUserId();
-            if ($song->user_id == $user_id) {
-                $this->model->delete($song_id);
-            }
+            $this->model->deleteWhere($song_id,'user_id', $user_id);
         }
 
         return PageHelper::redirect('song/index');

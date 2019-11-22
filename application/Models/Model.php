@@ -96,12 +96,13 @@ abstract class Model
         return $result;
     }
 
-    public function delete($id)
+    public function deleteWhere($id, $key, $value)
     {
-        $sql = "DELETE FROM $this->table WHERE id = :id";
+        $sql = "DELETE FROM $this->table WHERE id = :id AND $key = :$key";
         $stmt = $this->db->prepare($sql);
         $params = array(
-            ':id' => $id
+            ':id' => $id,
+            ":$key" => $value
         );
         $stmt->execute($params);
         $affectedRows = $stmt->rowCount();
@@ -110,12 +111,13 @@ abstract class Model
 
     public function softDelete($id)
     {
-        //UPDATE roles SET deleted = :deleted WHERE id = :id;
-        $sql = "UPDATE $this->table SET deleted = :deleted WHERE id = :id";
+        //UPDATE roles SET deleted = :1 WHERE id = :id AND deleted = :0;
+        $sql = "UPDATE $this->table SET deleted = :1 WHERE id = :id AND deleted = :0";
         $stmt = $this->db->prepare($sql);
         $params = array(
-            ':deleted' => 1,
-            ':id' => $id
+            ':1' => 1,
+            ':id' => $id,
+            ':0' => 0
         );
         $stmt->execute($params);
         $affectedRows = $stmt->rowCount();

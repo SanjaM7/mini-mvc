@@ -42,10 +42,7 @@ class RoleController extends Controller
     public function softDeleteRole($role_id)
     {
         if (isset($role_id)) {
-            $role = $this->model->get($role_id);
-            if ($role->deleted != 1) {
-                $this->model->softDelete($role_id);
-            }
+            $this->model->softDelete($role_id);
         }
 
         return PageHelper::redirect('role/index');
