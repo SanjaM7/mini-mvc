@@ -11,7 +11,6 @@ class User extends Model
 
     public function __construct(){
         parent::__construct('users');
-
     }
 
     public function validateRegisterParams($password, $passwordRepeat)

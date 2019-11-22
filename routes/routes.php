@@ -30,3 +30,6 @@ $router->post('/role/addRole',$namespace . 'RoleController@addRole');
 $router->get('/role/{id}/softDeleteRole',$namespace . 'RoleController@softDeleteRole');
 $router->get('/role/{id}/editRole',$namespace . 'RoleController@editRole');
 $router->post('/role/updateRole',$namespace . 'RoleController@updateRole');
+
+$router->get('/playlist/index',$namespace . 'PlaylistController@index');
+$router->post('/playlist/addPlaylist',$namespace . 'PlaylistController@addPlaylist');

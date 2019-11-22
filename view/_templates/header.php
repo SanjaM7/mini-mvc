@@ -32,6 +32,9 @@
                     <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>home/exampletwo">subpage
                         2</a>
                 </li>
+                <li>
+                    <a class="btn btn-secondary my-2 my-sm-0 mr-sm-2" href="<?php echo URL; ?>playlist/index">playlist</a>
+                </li>
                 <?php /** @var  $isDj */ ?>
                 <?php if ($isDj) : ?>
                     <li>
