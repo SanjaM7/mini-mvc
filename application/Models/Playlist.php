@@ -2,6 +2,8 @@
 
 namespace Application\Models;
 
+use Application\Libs\SessionHelper;
+
 class Playlist extends Model
 {
     public $id;
@@ -28,14 +30,16 @@ class Playlist extends Model
             $song_duration = $song->duration;
             $durationSum += $song_duration;
 
-            var_dump($song_duration);
-            if($durationSum < $playlist->duration){
-                $this->storePlaylistSong($playlist_id, $song_id);
+            if(!$this->songExists($song_id)) {
+                if ($durationSum < $playlist->duration) {
+                    $this->storePlaylistSong($playlist_id, $song_id);
+                }
             }
         }
     }
 
-    public function storePlaylistSong($playlist_id, $song_id){
+    public function storePlaylistSong($playlist_id, $song_id)
+    {
         $sql = "INSERT INTO playlist_song (playlist_id, song_id) VALUES (:playlist_id, :song_id);";
         $stmt = $this->db->prepare($sql);
         $params = array (
@@ -43,5 +47,17 @@ class Playlist extends Model
             ":song_id" => $song_id
         );
         $stmt->execute($params);
+    }
+
+    public function songExists($song_id)
+    {
+        $sql = "SELECT * FROM playlist_song WHERE song_id = :song_id";
+        $stmt = $this->db->prepare($sql);
+        $params = array (
+            ":song_id" => $song_id
+        );
+        $stmt->execute($params);
+        $result = $stmt->fetch();
+        return $result != null ? true : false;
     }
 }

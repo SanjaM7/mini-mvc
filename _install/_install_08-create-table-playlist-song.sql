@@ -31,7 +31,7 @@ CREATE TABLE `playlist_song` (
   KEY `fk_playlist_song_2_idx` (`song_id`),
   CONSTRAINT `fk_playlist_song_1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`),
   CONSTRAINT `fk_playlist_song_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

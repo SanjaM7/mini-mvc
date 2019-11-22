@@ -20,6 +20,10 @@ class PlaylistController extends Controller
 
     public function index()
     {
+        $user_id = SessionHelper::getUserId();
+
+        $lastTwoPlaylists = $this->model->getLastTwo('user_id', $user_id);
+
         PageHelper::displayPage('playlists/index.php');
     }
 

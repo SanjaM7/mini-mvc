@@ -38,10 +38,13 @@ abstract class Model
         );
     }
 
-    private function doGetWhere($key, $value, $limit)
+    private function doGetWhere($key, $value, $limit, $order)
     {
         //SELECT email FROM users WHERE email = :email (LIMIT 1);
         $sql = "SELECT * FROM $this->table WHERE $key = :$key";
+        if($order == 'DESC'){
+            $sql = "$sql ORDER BY id DESC";
+        }
         if($limit > 0){
             $sql = "$sql LIMIT $limit";
         }
@@ -57,12 +60,12 @@ abstract class Model
 
     public function getWhere($key, $value)
     {
-        return $this->doGetWhere($key, $value, 0);
+        return $this->doGetWhere($key, $value, 0, 'ASC');
     }
 
     public function getFirstWhere($key, $value)
     {
-        $result = $this->doGetWhere($key, $value, 1);
+        $result = $this->doGetWhere($key, $value, 1, 'ASC');
         $first = null;
         if(!empty($result)){
             $first = $result[0];
@@ -79,6 +82,11 @@ abstract class Model
     public function getAll()
     {
         return $this->getWhere('1', '1');
+    }
+
+    public function getLastTwo($key, $value)
+    {
+        return $this->doGetWhere($key, $value, 2, 'DESC');
     }
 
     public function exists($key, $value)
