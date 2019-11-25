@@ -1,4 +1,3 @@
-use mini;
 -- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: mini
@@ -29,7 +28,8 @@ CREATE TABLE `songs` (
   `track` text COLLATE utf8_unicode_ci NOT NULL,
   `link` text COLLATE utf8_unicode_ci,
   `user_id` int(11) NOT NULL,
-  `duration` int(11) NOT NULL,
+  `duration` INT NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `fk_song_user_idx` (`user_id`),
@@ -37,4 +37,6 @@ CREATE TABLE `songs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
+--
+-- Dumping data for table `songs`
+--

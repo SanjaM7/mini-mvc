@@ -21,7 +21,7 @@ $router->post('/user/updateUserRole',$namespace . 'UserController@updateUserRole
 $router->get('/song/index',$namespace . 'SongController@index');
 $router->post('/song/searchSong',$namespace . 'SongController@searchSong');
 $router->post('/song/addSong',$namespace . 'SongController@addSong');
-$router->get('/song/{id}/deleteSong',$namespace . 'SongController@deleteSong');
+$router->get('/song/{id}/softDeleteSong',$namespace . 'SongController@softDeleteSong');
 $router->get('/song/{id}/editSong',$namespace . 'SongController@editSong');
 $router->post('/song/updateSong',$namespace . 'SongController@updateSong');
 

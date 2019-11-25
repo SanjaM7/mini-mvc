@@ -8,12 +8,11 @@
         <label>Duration: </label>
         <input type="number" name="hours" value="" min="0" max="23" step="1" placeholder="hours" required/>
         <span> : </span>
-        <input type="number" name="minutes" value="" style="width:60px" min="0" max="59" step="1" placeholder="min"
-               required/>
+        <input type="number" name="minutes" value="" style="width:60px" min="0" max="59" step="1" placeholder="min" required/>
         <span> : </span>
         <input type="number" name="seconds" value="" style="width:60px" min="0" max="59" step="1" placeholder="sec"
-               onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;" required/>
-        <input type="submit" name="submit_generate_playlist" value="Submit"/>
+               onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;"/>
+        <input type="submit" name="submit_generate_playlist" value="Submit" required/>
     </form>
     <?php require ROOT . 'view/includes/errors.php'; ?>
     <!-- main content output -->

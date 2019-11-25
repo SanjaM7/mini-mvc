@@ -89,12 +89,15 @@ class SongController extends Controller
         return PageHelper::redirect('song/index');
     }
 
-    public function deleteSong($song_id)
+    public function softDeleteSong($song_id)
     {
         PermissionHelper::requireDj();
         if (isset($song_id)) {
             $user_id = SessionHelper::getUserId();
-            $this->model->deleteWhere($song_id,'user_id', $user_id);
+            $song = $this->model->get($song_id);
+            if($song->user_id == $user_id) {
+                $this->model->softDelete($song_id);
+            }
         }
 
         return PageHelper::redirect('song/index');

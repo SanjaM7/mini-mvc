@@ -45,12 +45,13 @@
                         <td>Track</td>
                         <td>Link</td>
                         <td>Duration</td>
-                        <td>DELETE</td>
+                        <td>Deleted</td>
+                        <td>SOFT DELETE</td>
                         <td>EDIT</td>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($songs as $song) { ?>
+                    <?php foreach ($songs as $song) : ?>
                         <tr>
                             <td><?php if (isset($song->id)) echo htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php if (isset($song->artist)) echo htmlspecialchars($song->artist, ENT_QUOTES, 'UTF-8'); ?></td>
@@ -61,14 +62,15 @@
                                 <?php endif; ?>
                             </td>
                             <td><?php if (isset($song->duration)) echo htmlspecialchars($song->duration, ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php if (isset($song->deleted)) echo htmlspecialchars($song->deleted, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
-                                <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/deleteSong'; ?>">delete</a>
+                                <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/softDeleteSong'; ?>">soft delete</a>
                             </td>
                             <td>
                                 <a href="<?php echo URL . 'song/' . htmlspecialchars($song->id, ENT_QUOTES, 'UTF-8') . '/editSong'; ?>">edit</a>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php endif; ?>
