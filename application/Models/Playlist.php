@@ -21,13 +21,13 @@ class Playlist extends Model
         if (empty($this->name)) {
             $errors[] = 'Enter Name';
         }
-        if (empty($hours)) {
+        if (!is_numeric($hours)) {
             $errors[] = 'Enter hours';
         }
-        if (empty($minutes)) {
+        if (!is_numeric($minutes)) {
             $errors[] = 'Enter minutes';
         }
-        if (empty($seconds)) {
+        if (!is_numeric($seconds)) {
             $errors[] = 'Enter seconds';
         }
         return $errors;
@@ -43,7 +43,7 @@ class Playlist extends Model
     private function getSongs()
     {
         $song = new Song();
-        $songs = $song->getAll();
+        $songs = $song->getWhere('deleted', 0);
         return $songs;
     }
 

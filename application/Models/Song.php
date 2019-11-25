@@ -24,10 +24,10 @@ class Song extends Model
         if (empty($this->track)) {
             $errors[] = 'Enter track';
         }
-        if (empty($minutes)) {
+        if (!is_numeric($minutes)) {
             $errors[] = 'Enter minutes';
         }
-        if (empty($seconds)) {
+        if (!is_numeric($seconds)) {
             $errors[] = 'Enter seconds';
         }
         return $errors;
