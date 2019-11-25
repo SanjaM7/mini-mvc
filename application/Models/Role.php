@@ -14,15 +14,19 @@ class Role extends Model
     public function validateRoleParams()
     {
         $errors = array();
-        if (empty($this->name) || strlen($this->role) > 20) {
+        if (empty($this->name) || strlen($this->name) > 20) {
             $errors[] = 'Invalid Role';
         }
 
         return $errors;
     }
 
-    public function countUsers(){
-        $sql = 'SELECT role_id, COUNT(*) as countUsers FROM users GROUP BY role_id';
+    public function getRolesWithUsersCount(){
+        $sql = 'SELECT roles.id, roles.name, deleted, COALESCE(countUsers.countOfUsers, 0) as countOfUsers
+                FROM roles
+                LEFT JOIN (SELECT role_id, COUNT(*) as countOfUsers FROM users GROUP BY role_id) as countUsers
+                ON roles.id = countUsers.role_id;'
+        ;
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();

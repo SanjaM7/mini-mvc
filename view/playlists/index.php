@@ -8,7 +8,8 @@
         <label>Duration: </label>
         <input type="number" name="hours" value="" min="0" max="23" step="1" placeholder="hours" required/>
         <span> : </span>
-        <input type="number" name="minutes" value="" style="width:60px" min="0" max="59" step="1" placeholder="min" required/>
+        <input type="number" name="minutes" value="" style="width:60px" min="0" max="59" step="1" placeholder="min"
+               required/>
         <span> : </span>
         <input type="number" name="seconds" value="" style="width:60px" min="0" max="59" step="1" placeholder="sec"
                onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;"/>
@@ -16,9 +17,11 @@
     </form>
     <?php require ROOT . 'view/includes/errors.php'; ?>
     <!-- main content output -->
-    <?php $playlists = $params['playlists'] ?>
-    <?php if (!empty($playlists)) : ?>
-        <div class="box">
+    <div class="box">
+        <?php $playlists = $params['playlists'] ?>
+        <?php if (empty($playlists)) : ?>
+            <p>You don't have playlist generate random one</p>
+        <?php else : ?>
             <h3>Last three playlists</h3>
             <?php foreach ($playlists as $playlist) : ?>
                 <table class="table table-dark m-0">
@@ -62,8 +65,8 @@
                     </tbody>
                 </table>
             <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </div>
 
 

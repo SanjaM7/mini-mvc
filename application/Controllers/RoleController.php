@@ -6,6 +6,7 @@ use Application\Libs\PageHelper;
 use Application\Libs\PermissionHelper;
 use Application\Libs\SessionHelper;
 use Application\Models\Role;
+use Application\Models\RoleViewModel;
 use Illuminate\Routing\Controller;
 
 class RoleController extends Controller
@@ -20,12 +21,11 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = $this->model->getAll();
-        $roleIdCountUsers = $this->model->countUsers();
+        $rolesWithUsersCount = $this->model->getRolesWithUsersCount();
+        $roleViewModels = $this->mapToRoleViewModel($rolesWithUsersCount);
         $params = array(
             'errors' => array(),
-            'roles' => $roles,
-            'roleIdCountUsers' => $roleIdCountUsers
+            'roles' => $roleViewModels
         );
 
         PageHelper::displayPage('roles/index.php', $params);
@@ -90,5 +90,21 @@ class RoleController extends Controller
         }
 
         return PageHelper::redirect('role/index');
+    }
+
+    private function mapToRoleViewModel($rolesWithUsersCount)
+    {
+        $roleViewModels = array();
+        for($i = 0; $i < count($rolesWithUsersCount); $i++){
+            $roleViewModel = new RoleViewModel();
+            $roleViewModel->id = $rolesWithUsersCount[$i]->id;
+            $roleViewModel->name = $rolesWithUsersCount[$i]->name;
+            $roleViewModel->deleted = $rolesWithUsersCount[$i]->deleted;
+            $roleViewModel->countOfUsers = $rolesWithUsersCount[$i]->countOfUsers;
+
+            $roleViewModels[] = $roleViewModel;
+        }
+
+        return $roleViewModels;
     }
 }

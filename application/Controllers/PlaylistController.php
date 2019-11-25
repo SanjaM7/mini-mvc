@@ -27,7 +27,7 @@ class PlaylistController extends Controller
         $user_id = SessionHelper::getUserId();
         $playlistSong = new PlaylistSong();
         $lastThreePlaylists = $playlistSong->getLastThreePlaylists($user_id);
-        $playlistViewModels = $this->mapToPlaylistView($lastThreePlaylists);
+        $playlistViewModels = $this->mapToPlaylistViewModel($lastThreePlaylists);
         $params = array(
             'playlists' => $playlistViewModels,
             'errors' => array()
@@ -62,7 +62,7 @@ class PlaylistController extends Controller
         return PageHelper::redirect('playlist/index');
     }
 
-    private function mapToPlaylistView($playlists)
+    private function mapToPlaylistViewModel($playlists)
     {
         $playlistIds = array_column($playlists, "playlist_id");
         $uniquePlaylistIds = array_unique($playlistIds);
@@ -75,7 +75,6 @@ class PlaylistController extends Controller
             };
 
             $playlistSongs = array_values(array_filter($playlists, $filterFunc));
-
             $playlistViewModel->id = $playlistSongs[0]->playlist_id;
             $playlistViewModel->name = $playlistSongs[0]->name;
             $playlistViewModel->user_id = $playlistSongs[0]->user_id;
