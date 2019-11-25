@@ -13,6 +13,23 @@ class Song extends Model
 
     public function __construct(){
         parent::__construct('songs');
+    }
 
+    public function validateSongParams($minutes, $seconds)
+    {
+        $errors = array();
+        if (empty($this->artist)) {
+            $errors[] = 'Enter Artist';
+        }
+        if (empty($this->track)) {
+            $errors[] = 'Enter track';
+        }
+        if (empty($minutes)) {
+            $errors[] = 'Enter minutes';
+        }
+        if (empty($seconds)) {
+            $errors[] = 'Enter seconds';
+        }
+        return $errors;
     }
 }

@@ -1,7 +1,7 @@
 <div class="m-3">
     <div class="row">
-        <div class="col-lg-7">
-            <div class="jumbotron text-center" style="width: 500px;">
+        <div class="col-lg-6">
+            <div class="jumbotron text-center">
                 <h3>LOG IN</h3>
                 <p>Enter username and password.</p>
                 <form action="<?php echo URL; ?>user/postLogIn" method="POST">
@@ -20,7 +20,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-lg-5 text-center">
+        <div class="col-lg-6 text-center">
             <?php require ROOT . 'view/includes/errors.php'; ?>
         </div>
     </div>

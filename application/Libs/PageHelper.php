@@ -7,6 +7,12 @@ class PageHelper
     public static function displayPage($viewName, $params = array())
     {
         $isLoggedIn = SessionHelper::isUserLoggedIn();
+        if(empty($params['errors'])){
+            $errors = array (
+                'errors' => SessionHelper::getAndClearErrors()
+            );
+            $params = array_merge($params, $errors);
+        }
         if($isLoggedIn) {
             $isDj = SessionHelper::isDj();
             $isAdmin = SessionHelper::isAdmin();
@@ -21,12 +27,12 @@ class PageHelper
     {
         global $redirect;
         return $redirect->to($url);
-        //header('location: ' . URL . $url);
     }
 
     public static function redirectBack()
     {
-        header('location: ' . $_SERVER['HTTP_REFERER']);
+        global $redirect;
+        return $redirect->to($_SERVER['HTTP_REFERER']);
     }
 
 }

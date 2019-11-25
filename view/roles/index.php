@@ -3,13 +3,12 @@
     <div class="container">
         <!-- add role form -->
         <h3>Add a role</h3>
-        <div class="box">
-            <form action="<?php echo URL; ?>role/addRole" method="POST">
-                <label>Role name</label>
-                <input type="text" name="role" value="" required/>
-                <input type="submit" name="submit_add_role" value="Submit"/>
-            </form>
-        </div>
+        <form action="<?php echo URL; ?>role/addRole" method="POST">
+            <label>Role name</label>
+            <input type="text" name="role" value="" required/>
+            <input type="submit" name="submit_add_role" value="Submit"/>
+        </form>
+        <?php require ROOT . 'view/includes/errors.php'; ?>
         <!-- main content output -->
         <div class="box">
             <h3>List of roles</h3>

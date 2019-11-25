@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Libs;
+namespace Application\Validations;
 
-trait ValidationTrait
+trait UserValidationTrait
 {
     public function validateRegister($password, $passwordRepeat, $user)
     {
@@ -27,6 +27,11 @@ trait ValidationTrait
     public function validateLogIn($password, $user)
     {
         $errors = $user->validateLogInParams($password);
+
+        if ($errors) {
+            return $errors;
+        }
+
         $user = $user->getFirstWhere('username', $user->username);
 
         if (!isset($user->email)) {

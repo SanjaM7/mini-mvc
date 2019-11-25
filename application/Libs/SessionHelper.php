@@ -35,4 +35,21 @@ class SessionHelper
     {
         return ($_SESSION['role_id'] == 2 ? true : false);
     }
+
+    public static function setErrors($errors)
+    {
+        $_SESSION['errors'] = $errors;
+    }
+
+    public static function getAndClearErrors()
+    {
+        $errors = array();
+        if(isset($_SESSION['errors'])){
+            $errors = $_SESSION['errors'];
+            $_SESSION['errors'] = null;
+        }
+
+        return $errors;
+    }
+
 }

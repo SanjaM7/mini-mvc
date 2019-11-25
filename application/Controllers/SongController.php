@@ -7,6 +7,7 @@ use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Song;
 use Illuminate\Routing\Controller;
+use Khill\Duration\Duration;
 
 class SongController extends Controller
 {
@@ -22,8 +23,14 @@ class SongController extends Controller
         PermissionHelper::requireDj();
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
+        foreach($songs as $song){
+            $song_duration = $song->duration;
+            $duration = new Duration("$song_duration");
+            $song->duration = $duration->formatted();
+        }
         $count_of_songs = $this->model->count();
         $params = array(
+            'errors' => array(),
             'songs' => $songs,
             'count_of_songs' => $count_of_songs,
         );
@@ -45,6 +52,7 @@ class SongController extends Controller
         }
 
         $params = array(
+            'errors' => array(),
             'searches' => $searches,
             'searchName' => $searchName
         );
@@ -65,7 +73,16 @@ class SongController extends Controller
             $minutes = $_POST['minutes'];
             $seconds = $_POST['seconds'];
 
-            $this->model->duration = 60 * $minutes + $seconds;
+            $errors = $this->model->validateSongParams($minutes, $seconds);
+
+            if ($errors) {
+                SessionHelper::setErrors($errors);
+                return PageHelper::redirect('song/index');
+            }
+
+            $duration = new Duration("$minutes:$seconds");
+            $this->model->duration = $duration->toSeconds();
+
             $this->model->save();
         }
 
@@ -96,8 +113,11 @@ class SongController extends Controller
         if ($song->user_id != $user_id) {
             return PageHelper::redirect('song/index');
         }
-
-        PageHelper::displayPage('songs/edit.php', $params = array('song' => $song));
+        $params = array(
+            'errors' => array(),
+            'song' => $song
+        );
+        PageHelper::displayPage('songs/edit.php', $params);
 
     }
 
@@ -113,7 +133,17 @@ class SongController extends Controller
             $this->model->user_id = $user_id;
             $minutes = $_POST['minutes'];
             $seconds = $_POST['seconds'];
-            $this->model->duration = $minutes * 60 + $seconds;
+
+            $errors = $this->model->validateSongParams($minutes, $seconds);
+
+            if ($errors) {
+                SessionHelper::setErrors($errors);
+                return PageHelper::redirect('song/' . $this->model->id . '/editSong');
+            }
+
+            $duration = new Duration("$minutes:$seconds");
+            $this->model->duration = $duration->toSeconds();
+
             $this->model->update();
         }
 

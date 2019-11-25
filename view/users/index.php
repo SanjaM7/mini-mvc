@@ -3,10 +3,11 @@
     <!-- main content output -->
     <?php if (isset($params['count_of_users'])) : ?>
         <?php $count_of_users = $params['count_of_users'] ?>
-        <h3>Count of users</h3>
-        <div>
+        <h3>Count of users:
+        <span>
             <?php echo $count_of_users ?>
-        </div>
+        </span>
+        </h3>
     <?php endif; ?>
     <div class="box">
         <?php if (isset($params['users'])) : ?>

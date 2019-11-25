@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1300650ce79a307b07c10f848431b927",
+    "content-hash": "9af229151240ef24660fbd94198a0f51",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -521,6 +521,56 @@
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
             "time": "2019-11-18T21:49:40+00:00"
+        },
+        {
+            "name": "khill/php-duration",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kevinkhill/php-duration.git",
+                "reference": "5efcb6d492030e012a869f328284a377ee35c993"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kevinkhill/php-duration/zipball/5efcb6d492030e012a869f328284a377ee35c993",
+                "reference": "5efcb6d492030e012a869f328284a377ee35c993",
+                "shasum": ""
+            },
+            "require-dev": {
+                "doctrine/instantiator": "1.0.4",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~1.0",
+                "symfony/config": "~2.0",
+                "symfony/console": "~2.0",
+                "symfony/filesystem": "~2.0",
+                "symfony/stopwatch": "~2.0",
+                "symfony/yaml": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Khill\\Duration\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Hill",
+                    "email": "kevinkhill@gmail.com",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Converts between colon formatted time, human-readable time and seconds",
+            "keywords": [
+                "convert",
+                "duration",
+                "seconds",
+                "time"
+            ],
+            "time": "2018-07-05T12:10:14+00:00"
         },
         {
             "name": "nesbot/carbon",

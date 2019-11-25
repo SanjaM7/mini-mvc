@@ -11,6 +11,15 @@ class Role extends Model
         parent::__construct('roles');
     }
 
+    public function validateRoleParams()
+    {
+        $errors = array();
+        if (empty($this->role)) {
+            $errors[] = 'Enter Role';
+        }
+        return $errors;
+    }
+
     public function countUsers(){
         $sql = 'SELECT role_id, COUNT(*) as countUsers FROM users GROUP BY role_id';
         $stmt = $this->db->prepare($sql);
