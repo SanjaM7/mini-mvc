@@ -5,14 +5,14 @@ namespace Application\Controllers;
 use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
-use Application\Libs\ValidationTrait;
+use Application\Validations\UserValidationTrait;
 use Application\Models\Role;
 use Application\Models\User;
 use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
-    use ValidationTrait;
+    use UserValidationTrait;
     public $model;
 
     public function __construct()
@@ -28,6 +28,7 @@ class UserController extends Controller
         $role = new Role();
         $roles = $role->getAll();
         $params = array(
+            'errors' => array(),
             'users' => $users,
             'count_of_users' => $count_of_users,
             'roles' => $roles
@@ -47,6 +48,7 @@ class UserController extends Controller
         $role = new Role();
         $roles = $role->getAll();
         $params = array(
+            'errors' => array(),
             'user' => $user,
             'roles' => $roles
         );
@@ -69,13 +71,13 @@ class UserController extends Controller
     public function register()
     {
         PermissionHelper::requireUnauthorized();
-        PageHelper::displayPage('users/register.php');
+        PageHelper::displayPage('users/register.php', $params = array('errors' => array()));
     }
 
     public function logIn()
     {
         PermissionHelper::requireUnauthorized();
-        PageHelper::displayPage('users/log_in.php');
+        PageHelper::displayPage('users/log_in.php', $params = array('errors' => array()));
     }
 
     public function postRegister()

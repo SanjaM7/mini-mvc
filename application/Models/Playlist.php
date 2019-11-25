@@ -15,49 +15,84 @@ class Playlist extends Model
         parent::__construct('playlists');
     }
 
-    public function generateRandomPlaylist($songs, $playlist){
-
-        $playlist_id = $playlist->id;
-
-        $durationSum = 0;
-        $song_duration = 0;
-
-        while($durationSum < $playlist->duration){
-            $randomSongId = rand(0,count($songs));
-            $song = $songs[$randomSongId];
-            $song_id = $song->id;
-
-            $song_duration = $song->duration;
-            $durationSum += $song_duration;
-
-            if(!$this->songExists($song_id)) {
-                if ($durationSum < $playlist->duration) {
-                    $this->storePlaylistSong($playlist_id, $song_id);
-                }
-            }
+   public function validatePlaylistParams($hours, $minutes, $seconds)
+    {
+        $errors = array();
+        if (empty($this->name)) {
+            $errors[] = 'Enter Name';
         }
+        if (empty($hours)) {
+            $errors[] = 'Enter hours';
+        }
+        if (empty($minutes)) {
+            $errors[] = 'Enter minutes';
+        }
+        if (empty($seconds)) {
+            $errors[] = 'Enter seconds';
+        }
+        return $errors;
     }
 
-    public function storePlaylistSong($playlist_id, $song_id)
+    public function generatePlaylist()
     {
-        $sql = "INSERT INTO playlist_song (playlist_id, song_id) VALUES (:playlist_id, :song_id);";
-        $stmt = $this->db->prepare($sql);
-        $params = array (
-            ":playlist_id" => $playlist_id,
-            ":song_id" => $song_id
-        );
-        $stmt->execute($params);
+        $songs = $this->getSongs();
+        $sameSongsIds = $this->getSameSongIds();
+        $this->generateNoRepeatPlaylist($songs, $sameSongsIds);
     }
 
-    public function songExists($song_id)
+    private function getSongs()
     {
-        $sql = "SELECT * FROM playlist_song WHERE song_id = :song_id";
-        $stmt = $this->db->prepare($sql);
-        $params = array (
-            ":song_id" => $song_id
-        );
-        $stmt->execute($params);
-        $result = $stmt->fetch();
-        return $result != null ? true : false;
+        $song = new Song();
+        $songs = $song->getAll();
+        return $songs;
+    }
+
+    private function getSameSongIds()
+    {
+        $lastTwoPlaylists = $this->getLastTwo('user_id', $this->user_id);
+        if(count($lastTwoPlaylists) != 2){
+            return array();
+        }
+        $playlistSong = new PlaylistSong();
+        $lastPlaylist = $playlistSong->getWhere('playlist_id', $lastTwoPlaylists[0]->id);
+        $secondToLastPlaylist = $playlistSong->getWhere('playlist_id', $lastTwoPlaylists[1]->id);
+        $secondToLastPlaylistSongIds = array_column($secondToLastPlaylist, 'song_id');
+        $lastPlaylistSongIds = array_column($lastPlaylist, 'song_id');
+        $sameSongsIds = array_intersect($secondToLastPlaylistSongIds, $lastPlaylistSongIds);
+        return $sameSongsIds;
+    }
+
+    private function generateNoRepeatPlaylist($songs, $sameSongsIds)
+    {
+        $filterFunc = function($song) use ($sameSongsIds){
+            return !in_array($song->id, $sameSongsIds);
+        };
+        $filtered = array_filter($songs, $filterFunc);
+
+        $this->generateRandomPlaylist($filtered);
+    }
+
+    private function generateRandomPlaylist($songs)
+    {
+        $this->save();
+        $playlistDuration = 0;
+
+        while(count($songs) > 0){
+            $songs = array_values($songs);
+            $randomSongIndex = rand(0,count($songs)-1);
+            $song = $songs[$randomSongIndex];
+
+            $playlistDuration += $song->duration;
+            if($playlistDuration >= $this->duration){
+                break;
+            }
+            $playlistSong = new PlaylistSong();
+            $playlistSong->playlist_id = $this->id;
+            $playlistSong->song_id = $song->id;
+
+
+            $playlistSong->save();
+            unset($songs[$randomSongIndex]);
+        }
     }
 }
