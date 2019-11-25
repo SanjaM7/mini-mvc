@@ -22,11 +22,11 @@ class Role extends Model
     }
 
     public function getRolesWithUsersCount(){
-        $sql = 'SELECT roles.id, roles.name, deleted, COALESCE(countUsers.countOfUsers, 0) as countOfUsers
+        $sql = 'SELECT roles.id, roles.name, deleted, COUNT(users.id) as countOfUsers
                 FROM roles
-                LEFT JOIN (SELECT role_id, COUNT(*) as countOfUsers FROM users GROUP BY role_id) as countUsers
-                ON roles.id = countUsers.role_id;'
-        ;
+                LEFT JOIN users
+                ON  roles.id = users.role_id
+                GROUP BY roles.id';
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
