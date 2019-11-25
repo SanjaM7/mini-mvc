@@ -7,7 +7,7 @@
         <form action="<?php echo URL; ?>role/updateRole" method="POST">
             <label>Role</label>
             <input autofocus type="text" name="role"
-                   value="<?php echo htmlspecialchars($role->role, ENT_QUOTES, 'UTF-8'); ?>" required/>
+                   value="<?php echo htmlspecialchars($role->name, ENT_QUOTES, 'UTF-8'); ?>" required/>
             <input type="hidden" name="role_id"
                    value="<?php echo htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8'); ?>"/>
             <input type="submit" name="submit_update_role" value="Update"/>

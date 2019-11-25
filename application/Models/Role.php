@@ -5,7 +5,7 @@ namespace Application\Models;
 class Role extends Model
 {
     public $id;
-    public $role;
+    public $name;
 
     public function __construct(){
         parent::__construct('roles');
@@ -14,9 +14,10 @@ class Role extends Model
     public function validateRoleParams()
     {
         $errors = array();
-        if (empty($this->role)) {
-            $errors[] = 'Enter Role';
+        if (empty($this->name) || strlen($this->role) > 20) {
+            $errors[] = 'Invalid Role';
         }
+
         return $errors;
     }
 

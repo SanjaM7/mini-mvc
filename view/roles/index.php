@@ -28,7 +28,7 @@
                 <?php foreach ($roles as $role) { ?>
                     <tr>
                         <td><?php if (isset($role->id)) echo htmlspecialchars($role->id, ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php if (isset($role->role)) echo htmlspecialchars($role->role, ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php if (isset($role->name)) echo htmlspecialchars($role->name, ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?php if (isset($role->deleted)) echo htmlspecialchars($role->deleted, ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>
                             <?php /** @var  $roleIdCountUsers */ ?>

@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `songs`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `songs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `artist` text COLLATE utf8_unicode_ci NOT NULL,
-  `track` text COLLATE utf8_unicode_ci NOT NULL,
+  `artist` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `track` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `link` text COLLATE utf8_unicode_ci,
   `user_id` int(11) NOT NULL,
   `duration` INT NOT NULL,

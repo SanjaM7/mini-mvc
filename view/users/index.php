@@ -37,7 +37,7 @@
                             <?php foreach ($roles as $role) : ?>
                                 <?php if ($user->role_id == $role->id) : ?>
                                     <td>
-                                        <?php if (isset($user->role_id)) echo htmlspecialchars($role->role, ENT_QUOTES, 'UTF-8'); ?>
+                                        <?php if (isset($user->role_id)) echo htmlspecialchars($role->name, ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td>
                                         <a href="<?php echo URL . 'user/' . htmlspecialchars($user->id, ENT_QUOTES, 'UTF-8') . '/editUserRole'; ?>">edit</a>

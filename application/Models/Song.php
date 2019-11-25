@@ -18,17 +18,17 @@ class Song extends Model
     public function validateSongParams($minutes, $seconds)
     {
         $errors = array();
-        if (empty($this->artist)) {
-            $errors[] = 'Enter Artist';
+        if (empty($this->artist) || strlen($this->artist) > 60) {
+            $errors[] = 'Invalid Artist';
         }
-        if (empty($this->track)) {
-            $errors[] = 'Enter track';
+        if (empty($this->track) || strlen($this->track) > 60) {
+            $errors[] = 'Invalid track';
         }
         if (!is_numeric($minutes)) {
-            $errors[] = 'Enter minutes';
+            $errors[] = 'Invalid minutes';
         }
         if (!is_numeric($seconds)) {
-            $errors[] = 'Enter seconds';
+            $errors[] = 'Invalid seconds';
         }
         return $errors;
     }

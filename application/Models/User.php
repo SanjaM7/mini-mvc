@@ -19,7 +19,7 @@ class User extends Model
         if (!preg_match('/^[A-Za-z][A-Za-z0-9]{2,31}$/', $this->username)) {
             $errors[] = 'Invalid username';
         }
-        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL) || strlen($this->email) > 32) {
             $errors[] = 'Invalid e-mail';
         }
         if (strlen($password) < 6 || strlen($password) > 60) {

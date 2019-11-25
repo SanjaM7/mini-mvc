@@ -34,7 +34,7 @@ class RoleController extends Controller
     public function addRole()
     {
         if (isset($_POST['submit_add_role'])) {
-            $this->model->role = $_POST['role'];
+            $this->model->name = $_POST['role'];
 
             $errors = $this->model->validateRoleParams();
 
@@ -77,7 +77,7 @@ class RoleController extends Controller
     {
         if (isset($_POST['submit_update_role'])) {
             $this->model->id = $_POST['role_id'];
-            $this->model->role = $_POST['role'];
+            $this->model->name = $_POST['role'];
 
             $errors = $this->model->validateRoleParams();
 

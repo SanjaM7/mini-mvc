@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `playlists`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `playlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
+  `name` varchar(20) NOT NULL,
   `user_id` int(11) NOT NULL,
   `duration` int(11) NOT NULL,
   PRIMARY KEY (`id`),

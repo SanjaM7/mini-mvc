@@ -18,17 +18,17 @@ class Playlist extends Model
    public function validatePlaylistParams($hours, $minutes, $seconds)
     {
         $errors = array();
-        if (empty($this->name)) {
-            $errors[] = 'Enter Name';
+        if (empty($this->name) || strlen($this->name) > 20) {
+            $errors[] = 'Invalid Name';
         }
         if (!is_numeric($hours)) {
-            $errors[] = 'Enter hours';
+            $errors[] = 'Invalid hours';
         }
         if (!is_numeric($minutes)) {
-            $errors[] = 'Enter minutes';
+            $errors[] = 'Invalid minutes';
         }
         if (!is_numeric($seconds)) {
-            $errors[] = 'Enter seconds';
+            $errors[] = 'Invalid seconds';
         }
         return $errors;
     }
