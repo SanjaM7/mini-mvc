@@ -2,7 +2,7 @@
 
 namespace Application\Models;
 
-class PlaylistView
+class PlaylistViewModel
 {
     public $id;
     public $name;

@@ -7,7 +7,7 @@ use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Playlist;
 use Application\Models\PlaylistSong;
-use Application\Models\PlaylistView;
+use Application\Models\PlaylistViewModel;
 use Application\Models\Song;
 use Illuminate\Routing\Controller;
 use Khill\Duration\Duration;
@@ -68,7 +68,7 @@ class PlaylistController extends Controller
         $uniquePlaylistIds = array_unique($playlistIds);
         $playlistViewModels = array();
         foreach ($uniquePlaylistIds as $uniquePlaylistId){
-            $playlistViewModel = new PlaylistView();
+            $playlistViewModel = new PlaylistViewModel();
 
             $filterFunc = function($playlistSong) use($uniquePlaylistId){
                 return $playlistSong->playlist_id === $uniquePlaylistId;
