@@ -61,11 +61,14 @@ composer update
 
 # run SQL statements from MINI folder
 sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_01-create-database.sql"
-sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_03-create-table-users.sql"
 sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_02-create-table-roles.sql"
-sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_04-seeding-tables-users-roles.sql"
-sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_05-create-table-songs.sql"
-sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_06-seeding-table-songs.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_03-create-table-users.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_04-seeding-table-roles.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_05-seeding-table-users.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_06-create-table-songs.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_07-seeding-table-songs.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_08-create-table-playlists.sql"
+sudo mysql -h "localhost" -u "root" -proot < "/var/www/${PROJECTFOLDER}/_install/_install_09-create-table-playlist-song.sql"
 
 sudo mysql -h "localhost" -u "root" -proot -e "DROP USER IF EXISTS mini@localhost;CREATE USER mini@localhost;GRANT ALL PRIVILEGES ON *.* To mini@localhost IDENTIFIED BY '123456';FLUSH PRIVILEGES;"
 
