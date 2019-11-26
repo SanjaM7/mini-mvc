@@ -4,17 +4,37 @@ namespace Application\Models;
 
 use Application\Core\Db;
 
+/**
+ * Class Model
+ * Abstract class that contains basic CRUD logic for communicating with database
+ * All other models need to extend abstract Model in order to use them
+ * @package Application\Models
+ */
 abstract class Model
 {
+    /** @var \PDO object database access layer */
     public $db;
+    /** @var string table name */
     public $table;
 
+    /**
+     * Model constructor.
+     * @param string $table this parameter is set by extended class
+     */
     function __construct($table)
     {
         $this->table = $table;
         $this->db = Db::getPdo();
     }
 
+    /**
+     * Get records from database where given condition is satisfied
+     * @param string $key column name
+     * @param mixed $value
+     * @param int $limit limits the number of records returned
+     * @param string $order default is ASC
+     * @return array of objects of called class
+     */
     private function doGetWhere($key, $value, $limit, $order)
     {
         //SELECT email FROM users WHERE email = :email (LIMIT 1);
@@ -31,15 +51,28 @@ abstract class Model
             ":$key" => $value
         );
         $stmt->execute($params);
+        //returns a new instance of the requested class, mapping the columns of the result set to named properties in the class
         $result = $stmt->fetchAll(\PDO::FETCH_CLASS, get_called_class());
         return $result;
     }
 
+    /**
+     * Get all records from database (LIMIT 0) where given condition is satisfied, order ASC
+     * @param $key
+     * @param $value
+     * @return array
+     */
     public function getWhere($key, $value)
     {
         return $this->doGetWhere($key, $value, 0, 'ASC');
     }
 
+    /**
+     * Get single record from database (LIMIT 1) where given condition is satisfied, order ASC
+     * @param $key
+     * @param $value
+     * @return object
+     */
     public function getFirstWhere($key, $value)
     {
         $result = $this->doGetWhere($key, $value, 1, 'ASC');
@@ -51,27 +84,52 @@ abstract class Model
         return $first;
     }
 
+    /**
+     * Get single record by id from database
+     * @param int $id
+     * @return object
+     */
     public function get($id)
     {
         return $this->getFirstWhere('id', $id);
     }
 
+    /**
+     * Get all records from database
+     * @return array
+     */
     public function getAll()
     {
         return $this->getWhere('1', '1');
     }
 
+    /**
+     * Get last two records from database (LIMIT 2) where given condition is satisfied, order DESC
+     * @param $key
+     * @param $value
+     * @return array
+     */
     public function getLastTwo($key, $value)
     {
         return $this->doGetWhere($key, $value, 2, 'DESC');
     }
 
+    /**
+     * Check for existence of specific record in database
+     * @param $key
+     * @param $value
+     * @return bool returns true if record exists otherwise false
+     */
     public function exists($key, $value)
     {
         $result = $this->getFirstWhere($key, $value);
         return $result !== null ? true : false;
     }
 
+    /**
+     * Count number of records in database
+     * @return int
+     */
     public function count()
     {
         $sql = "SELECT COUNT(id) AS count FROM $this->table";
@@ -81,19 +139,11 @@ abstract class Model
         return $result;
     }
 
-    public function deleteWhere($id, $key, $value)
-    {
-        $sql = "DELETE FROM $this->table WHERE id = :id AND $key = :$key";
-        $stmt = $this->db->prepare($sql);
-        $params = array(
-            ':id' => $id,
-            ":$key" => $value
-        );
-        $stmt->execute($params);
-        $affectedRows = $stmt->rowCount();
-        return $affectedRows;
-    }
-
+    /**
+     * Soft delete record by id in database (changes the deleted column value from 0 to 1)
+     * @param $id
+     * @return int return number of affected rows (1)
+     */
     public function softDelete($id)
     {
         //UPDATE roles SET deleted = :1 WHERE id = :id AND deleted = :0;
@@ -109,6 +159,9 @@ abstract class Model
         return $affectedRows;
     }
 
+    /**
+     * Save a record to database
+     */
     public function save()
     {
         //"insert into songs (artist, track, link) values (:artist, :track, :link)";
@@ -135,6 +188,10 @@ abstract class Model
         $this->id = $id;
     }
 
+    /**
+     * Update a record in database
+     * @return int return number of affected rows (1)
+     */
     public function update()
     {
         //UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :id;
@@ -167,6 +224,13 @@ abstract class Model
         return $affectedRows;
     }
 
+    /**
+     * Get all records from database where given first or second condition is satisfied
+     * @param $searchName
+     * @param $first
+     * @param $second
+     * @return array
+     */
     public function search($searchName, $first, $second)
     {
         if(empty($searchName)){
