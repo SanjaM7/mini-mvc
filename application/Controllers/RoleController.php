@@ -96,12 +96,7 @@ class RoleController extends Controller
     {
         $roleViewModels = [];
         for($i = 0; $i < count($rolesWithUsersCount); $i++){
-            $roleViewModel = new RoleViewModel();
-            $roleViewModel->id = $rolesWithUsersCount[$i]->id;
-            $roleViewModel->name = $rolesWithUsersCount[$i]->name;
-            $roleViewModel->deleted = $rolesWithUsersCount[$i]->deleted;
-            $roleViewModel->countOfUsers = $rolesWithUsersCount[$i]->countOfUsers;
-
+            $roleViewModel = new RoleViewModel($rolesWithUsersCount[$i]);
             $roleViewModels[] = $roleViewModel;
         }
 

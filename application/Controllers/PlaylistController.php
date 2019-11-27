@@ -64,28 +64,21 @@ class PlaylistController extends Controller
         $uniquePlaylistIds = array_unique($playlistIds);
         $playlistViewModels = [];
         foreach ($uniquePlaylistIds as $uniquePlaylistId){
-            $playlistViewModel = new PlaylistViewModel();
-
             $filterFunc = function($playlistSong) use($uniquePlaylistId){
                 return $playlistSong->playlist_id === $uniquePlaylistId;
             };
 
             $playlistSongs = array_values(array_filter($playlists, $filterFunc));
-            $playlistViewModel->id = $playlistSongs[0]->playlist_id;
-            $playlistViewModel->name = $playlistSongs[0]->name;
-            $playlistViewModel->user_id = $playlistSongs[0]->user_id;
 
-            $playlist_duration = $playlistSongs[0]->playlist_duration;
-            $duration = new Duration("$playlist_duration");
-            $playlistViewModel->duration = $duration->formatted();
+            $duration = new Duration($playlistSongs[0]->playlist_duration);
+            $playlistSongs[0]->playlist_duration = $duration->formatted();
 
-            $playlistViewModel->songs = $playlistSongs;
-            foreach($playlistViewModel->songs as $playlistViewModel->song){
-                $song_duration = $playlistViewModel->song->song_duration;
-                $duration = new Duration("$song_duration");
-                $playlistViewModel->song->song_duration = $duration->formatted();
+            foreach($playlistSongs as $playlistSong){
+                $duration = new Duration($playlistSong->song_duration);
+                $playlistSong->song_duration = $duration->formatted();
             }
 
+            $playlistViewModel = new PlaylistViewModel($playlistSongs);
             $playlistViewModels[] = $playlistViewModel;
         }
 
