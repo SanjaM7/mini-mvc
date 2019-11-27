@@ -39,10 +39,10 @@ abstract class Model
     {
         //SELECT email FROM users WHERE email = :email (LIMIT 1);
         $sql = "SELECT * FROM $this->table WHERE $key = :$key";
-        if($order == 'DESC'){
+        if ($order == 'DESC') {
             $sql = "$sql ORDER BY id DESC";
         }
-        if($limit > 0){
+        if ($limit > 0) {
             $sql = "$sql LIMIT $limit";
         }
 
@@ -77,7 +77,7 @@ abstract class Model
     {
         $result = $this->doGetWhere($key, $value, 1, 'ASC');
         $first = null;
-        if(!empty($result)){
+        if (!empty($result)) {
             $first = $result[0];
         }
 
@@ -175,7 +175,7 @@ abstract class Model
         $columns = implode(', ', $keys);
 
         $params = array();
-        foreach ($keys as $key){
+        foreach ($keys as $key) {
             $params[":$key"] = $assocArray[$key];
         }
         $paramsKeys = array_keys($params);
@@ -205,14 +205,14 @@ abstract class Model
         $keys = array_keys($assocArray);
 
         $setArgs = array();
-        foreach($keys as $key){
+        foreach ($keys as $key) {
             $setArgs[] = "$key = :$key";
         }
 
         $setStatement = implode(', ', $setArgs);
 
         $params = array();
-        foreach ($keys as $key){
+        foreach ($keys as $key) {
             $params[":$key"] = $assocArray[$key];
         }
 
@@ -233,7 +233,7 @@ abstract class Model
      */
     public function search($searchName, $first, $second)
     {
-        if(empty($searchName)){
+        if (empty($searchName)) {
             return array();
         }
         $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";

@@ -13,6 +13,7 @@ use Illuminate\Routing\Controller;
 class UserController extends Controller
 {
     use UserValidationTrait;
+
     public $model;
 
     public function __construct()
