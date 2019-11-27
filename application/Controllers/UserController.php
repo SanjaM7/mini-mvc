@@ -8,6 +8,7 @@ use Application\Libs\PermissionHelper;
 use Application\Validations\UserValidationTrait;
 use Application\Models\Role;
 use Application\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
 /**
@@ -57,7 +58,7 @@ class UserController extends Controller
      * This method handles editing user role
      * @param int $user_id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function editUserRole($user_id)
     {
@@ -80,7 +81,7 @@ class UserController extends Controller
 
     /**
      * This method handles updating user role
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateUserRole()
     {
@@ -116,8 +117,7 @@ class UserController extends Controller
 
     /**
      * This method handles the registration of new users as well as their validation and creation.
-     * @return void
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return RedirectResponse|void
      */
     public function postRegister()
     {
@@ -143,7 +143,7 @@ class UserController extends Controller
 
     /**
      *  This controller handles login users in and redirecting them to home screen
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return RedirectResponse|void
      */
     public function postLogIn()
     {
@@ -176,7 +176,7 @@ class UserController extends Controller
 
     /**
      * This controller handles login users out and redirecting them to home screen
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function postLogOut()
     {

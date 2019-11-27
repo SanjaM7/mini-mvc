@@ -180,6 +180,7 @@ abstract class Model
 
     /**
      * Save a record to database and sets given model id
+     * @return void
      */
     public function save()
     {

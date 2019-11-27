@@ -2,6 +2,8 @@
 
 namespace Application\Libs;
 
+use Illuminate\Http\RedirectResponse;
+
 /**
  * Class PageHelper
  * This helper class is responsible for loading passed view with parameters and redirecting
@@ -37,7 +39,7 @@ class PageHelper
     /**
      * Redirect to passed route
      * @param string $url
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public static function redirect($url)
     {
@@ -47,7 +49,7 @@ class PageHelper
 
     /**
      * Redirect user to their previous location
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public static function redirectBack()
     {

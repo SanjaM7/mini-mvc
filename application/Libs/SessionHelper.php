@@ -69,7 +69,7 @@ class SessionHelper
 
     /**
      * Stores errors in session
-     * @param $errors
+     * @param string[] $errors
      * @return void
      */
     public static function setErrors($errors)

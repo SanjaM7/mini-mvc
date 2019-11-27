@@ -63,6 +63,7 @@ class Playlist extends Model
 
     /**
      * Generate playlist
+     * @return void
      */
     public function generatePlaylist()
     {
@@ -105,6 +106,7 @@ class Playlist extends Model
      * Removes songs with same id's and passes filtered array
      * @param Song[] $songs
      * @param int[] $sameSongsIds
+     * @return void
      */
     private function generateNoRepeatPlaylist($songs, $sameSongsIds)
     {
@@ -119,6 +121,7 @@ class Playlist extends Model
     /**
      * Saves the playlist and picks a random song and saves it
      * @param Song[] $songs
+     @return void
      */
     private function generateRandomPlaylist($songs)
     {

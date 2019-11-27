@@ -6,6 +6,7 @@ use Application\Libs\PageHelper;
 use Application\Libs\SessionHelper;
 use Application\Libs\PermissionHelper;
 use Application\Models\Song;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Khill\Duration\Duration;
 
@@ -55,7 +56,7 @@ class SongController extends Controller
 
     /**
      * This method is responsible for doing the search for song based on artist or track
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return RedirectResponse|void
      */
     public function searchSong()
     {
@@ -82,7 +83,7 @@ class SongController extends Controller
 
     /**
      * This method handles adding song
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function addSong()
     {
@@ -117,7 +118,7 @@ class SongController extends Controller
      * This method handles soft deleting song
      * @param int $song_id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function softDeleteSong($song_id)
     {
@@ -137,7 +138,7 @@ class SongController extends Controller
      * This method handles editing song
      * @param int $song_id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function editSong($song_id)
     {
@@ -161,7 +162,7 @@ class SongController extends Controller
 
     /**
      * This method handles updating song
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateSong()
     {

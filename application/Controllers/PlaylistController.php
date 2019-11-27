@@ -35,6 +35,7 @@ class PlaylistController extends Controller
 
     /**
      * This method shows last three playlists for logged user
+     * @return void
      */
     public function index()
     {
@@ -88,6 +89,10 @@ class PlaylistController extends Controller
         $uniquePlaylistIds = array_unique($playlistIds);
         $playlistViewModels = [];
         foreach ($uniquePlaylistIds as $uniquePlaylistId){
+            /**
+             * @param object
+             * @return bool
+             */
             $filterFunc = function($playlistSong) use($uniquePlaylistId){
                 return $playlistSong->playlist_id === $uniquePlaylistId;
             };
