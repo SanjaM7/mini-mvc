@@ -9,15 +9,30 @@ use Application\Models\Song;
 use Illuminate\Routing\Controller;
 use Khill\Duration\Duration;
 
+/**
+ * Class SongController
+ * This Controller handles working with songs: processing input data, executing logic and loading corresponding views
+ * @package Application\Controllers
+ */
 class SongController extends Controller
 {
+    /**
+     * @var object Song
+     */
     public $model;
 
+    /**
+     * SongController constructor.
+     */
     public function __construct()
     {
         $this->model = new Song();
     }
 
+    /**
+     * This method loads view with songs for logged user
+     * @return void
+     */
     public function index()
     {
         PermissionHelper::requireDj();
@@ -38,6 +53,10 @@ class SongController extends Controller
         PageHelper::displayPage('songs/index.php', $params);
     }
 
+    /**
+     * This method is responsible for doing the search for song based on artist or track
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function searchSong()
     {
         $searchName = $_POST['searchName'];
@@ -61,6 +80,10 @@ class SongController extends Controller
         return PageHelper::displayPage('songs/search.php', $params);
     }
 
+    /**
+     * This method handles adding song
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addSong()
     {
         PermissionHelper::requireDj();
@@ -90,6 +113,12 @@ class SongController extends Controller
         return PageHelper::redirect('song/index');
     }
 
+    /**
+     * This method handles soft deleting song
+     * @param int $song_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function softDeleteSong($song_id)
     {
         PermissionHelper::requireDj();
@@ -104,6 +133,12 @@ class SongController extends Controller
         return PageHelper::redirect('song/index');
     }
 
+    /**
+     * This method handles editing song
+     * @param int $song_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function editSong($song_id)
     {
         PermissionHelper::requireDj();
@@ -124,6 +159,10 @@ class SongController extends Controller
         PageHelper::displayPage('songs/edit.php', $params);
     }
 
+    /**
+     * This method handles updating song
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateSong()
     {
         PermissionHelper::requireDj();

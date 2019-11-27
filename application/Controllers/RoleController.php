@@ -9,16 +9,31 @@ use Application\Models\Role;
 use Application\Models\RoleViewModel;
 use Illuminate\Routing\Controller;
 
+/**
+ * Class RoleController
+ * This Controller handles working with roles: processing input data, executing logic and loading corresponding views
+ * @package Application\Controllers
+ */
 class RoleController extends Controller
 {
+    /**
+     * @var object Role
+     */
     public $model;
 
+    /**
+     * RoleController constructor.
+     */
     public function __construct()
     {
         $this->model = new Role();
         PermissionHelper::requireAdmin();
     }
 
+    /**
+     * This method loads view with roles and count of users
+     * @return void
+     */
     public function index()
     {
         $rolesWithUsersCount = $this->model->getRolesWithUsersCount();
@@ -31,6 +46,11 @@ class RoleController extends Controller
         PageHelper::displayPage('roles/index.php', $params);
     }
 
+    /**
+     *
+     * This method handles adding role
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addRole()
     {
         if (isset($_POST['submit_add_role'])) {
@@ -49,6 +69,12 @@ class RoleController extends Controller
         return PageHelper::redirect('role/index');
     }
 
+    /**
+     * This method handles soft deleting role
+     * @param int $role_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function softDeleteRole($role_id)
     {
         if (isset($role_id)) {
@@ -58,6 +84,12 @@ class RoleController extends Controller
         return PageHelper::redirect('role/index');
     }
 
+    /**
+     * This method handles editing role
+     * @param int $role_id
+     *
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function editRole($role_id)
     {
         if (isset($role_id)) {
@@ -73,6 +105,10 @@ class RoleController extends Controller
         return PageHelper::redirect('role/index');
     }
 
+    /**
+     * This method handles updating role
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateRole()
     {
         if (isset($_POST['submit_update_role'])) {
@@ -92,6 +128,12 @@ class RoleController extends Controller
         return PageHelper::redirect('role/index');
     }
 
+    /**
+     * This method maps RoleViewModel
+     * @param array $rolesWithUsersCount
+     *
+     * @return roleViewModel[]
+     */
     private function mapToRoleViewModel($rolesWithUsersCount)
     {
         $roleViewModels = [];

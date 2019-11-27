@@ -8,20 +8,34 @@ use Application\Libs\PermissionHelper;
 use Application\Models\Playlist;
 use Application\Models\PlaylistSong;
 use Application\Models\PlaylistViewModel;
-use Application\Models\Song;
 use Illuminate\Routing\Controller;
 use Khill\Duration\Duration;
 
+/**
+ * Class PlaylistController
+ * This Controller handles working with playlists: processing input data, executing logic and loading corresponding views
+ * @package Application\Controllers
+ */
 class PlaylistController extends Controller
 {
+    /**
+     * @var object Playlist
+     */
     public $model;
 
+    /**
+     * PlaylistController constructor.
+     * Creates a new playlist instance
+     */
     public function __construct()
     {
         $this->model = new Playlist();
         PermissionHelper::requireAuthorized();
     }
 
+    /**
+     * This method shows last three playlists for logged user
+     */
     public function index()
     {
         $user_id = SessionHelper::getUserId();
@@ -36,6 +50,10 @@ class PlaylistController extends Controller
         PageHelper::displayPage('playlists/index.php', $params);
     }
 
+    /**
+     * This method generates playlist and saves it
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addPlaylist()
     {
         if(isset($_POST['submit_generate_playlist'])){
@@ -58,6 +76,12 @@ class PlaylistController extends Controller
         return PageHelper::redirect('playlist/index');
     }
 
+    /**
+     * This method maps PlaylistViewModel
+     * @param array $playlists
+     *
+     * @return playlistViewModel[]
+     */
     private function mapToPlaylistViewModel($playlists)
     {
         $playlistIds = array_column($playlists, "playlist_id");
