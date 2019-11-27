@@ -28,10 +28,10 @@ class PlaylistController extends Controller
         $playlistSong = new PlaylistSong();
         $lastThreePlaylists = $playlistSong->getLastThreePlaylists($user_id);
         $playlistViewModels = $this->mapToPlaylistViewModel($lastThreePlaylists);
-        $params = array(
+        $params = [
             'playlists' => $playlistViewModels,
-            'errors' => array()
-        );
+            'errors' => []
+        ];
 
         PageHelper::displayPage('playlists/index.php', $params);
     }
@@ -42,19 +42,15 @@ class PlaylistController extends Controller
             $this->model->name = $_POST['name'];
             $user_id = SessionHelper::getUserId();
             $this->model->user_id = $user_id;
-            $hours = $_POST['hours'];
-            $minutes = $_POST['minutes'];
-            $seconds = $_POST['seconds'];
 
-            $errors = $this->model->validatePlaylistParams($hours, $minutes, $seconds);
+            $errors = $this->model->validatePlaylistParams($_POST['hours'], $_POST['minutes'], $_POST['seconds']);
             if ($errors) {
                 SessionHelper::setErrors($errors);
                 return PageHelper::redirect('playlist/index');
             }
 
-            $duration = new Duration("$hours:$minutes:$seconds");
-            $duration = $duration->toSeconds();
-            $this->model->duration = $duration;
+            $duration = new Duration($_POST['hours'] . ':' . $_POST['minutes']. ':' . $_POST['seconds']);
+            $this->model->duration = $duration->toSeconds();
 
             $this->model->generatePlaylist();
         }
@@ -66,7 +62,7 @@ class PlaylistController extends Controller
     {
         $playlistIds = array_column($playlists, "playlist_id");
         $uniquePlaylistIds = array_unique($playlistIds);
-        $playlistViewModels = array();
+        $playlistViewModels = [];
         foreach ($uniquePlaylistIds as $uniquePlaylistId){
             $playlistViewModel = new PlaylistViewModel();
 

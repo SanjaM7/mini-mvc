@@ -16,7 +16,7 @@
         "source": "https://github.com/panique/mini"
     },
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=7.1.0",
         "ext-pdo": "*",
         "illuminate/routing": "^6.5",
         "illuminate/events": "^6.5",

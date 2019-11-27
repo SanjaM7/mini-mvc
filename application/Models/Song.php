@@ -17,7 +17,7 @@ class Song extends Model
 
     public function validateSongParams($minutes, $seconds)
     {
-        $errors = array();
+        $errors = [];
         if (empty($this->artist) || strlen($this->artist) > 60) {
             $errors[] = 'Invalid Artist';
         }

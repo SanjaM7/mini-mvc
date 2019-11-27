@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 
-$namespace = array ('namespace' => 'Application\Controllers');
+$namespace = ['namespace' => 'Application\Controllers'];
 
 $router->group($namespace, function (Router $router) {
     $router->get('/', 'HomeController@index');

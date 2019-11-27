@@ -15,7 +15,7 @@ class User extends Model
 
     public function validateRegisterParams($password, $passwordRepeat)
     {
-        $errors = array();
+        $errors = [];
         if (!preg_match('/^[A-Za-z][A-Za-z0-9]{2,31}$/', $this->username)) {
             $errors[] = 'Invalid username';
         }
@@ -33,7 +33,7 @@ class User extends Model
 
     public function validateLogInParams($password)
     {
-        $errors = array();
+        $errors = [];
         if (empty($this->username)) {
             $errors[] = 'Enter Username';
         }

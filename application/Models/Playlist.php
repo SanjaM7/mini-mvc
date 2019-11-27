@@ -17,7 +17,7 @@ class Playlist extends Model
 
    public function validatePlaylistParams($hours, $minutes, $seconds)
     {
-        $errors = array();
+        $errors = [];
         if (empty($this->name) || strlen($this->name) > 20) {
             $errors[] = 'Invalid Name';
         }
@@ -51,7 +51,7 @@ class Playlist extends Model
     {
         $lastTwoPlaylists = $this->getLastTwo('user_id', $this->user_id);
         if(count($lastTwoPlaylists) != 2){
-            return array();
+            return [];
         }
         $playlistSong = new PlaylistSong();
         $lastPlaylist = $playlistSong->getWhere('playlist_id', $lastTwoPlaylists[0]->id);

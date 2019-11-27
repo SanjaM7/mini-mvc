@@ -28,12 +28,12 @@ class UserController extends Controller
         $count_of_users = $this->model->count();
         $role = new Role();
         $roles = $role->getAll();
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'users' => $users,
             'count_of_users' => $count_of_users,
             'roles' => $roles
-        );
+        ];
 
         PageHelper::displayPage('users/index.php', $params);
     }
@@ -48,11 +48,11 @@ class UserController extends Controller
         $user = $this->model->get($user_id);
         $role = new Role();
         $roles = $role->getAll();
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'user' => $user,
             'roles' => $roles
-        );
+        ];
 
         PageHelper::displayPage('users/edit.php', $params);
     }
@@ -72,13 +72,13 @@ class UserController extends Controller
     public function register()
     {
         PermissionHelper::requireUnauthorized();
-        PageHelper::displayPage('users/register.php', $params = array('errors' => array()));
+        PageHelper::displayPage('users/register.php', $params = ['errors' => []]);
     }
 
     public function logIn()
     {
         PermissionHelper::requireUnauthorized();
-        PageHelper::displayPage('users/log_in.php', $params = array('errors' => array()));
+        PageHelper::displayPage('users/log_in.php', $params = ['errors' => []]);
     }
 
     public function postRegister()
@@ -90,14 +90,12 @@ class UserController extends Controller
 
         $this->model->username = $_POST['username'];
         $this->model->email = $_POST['email'];
-        $password = $_POST['password'];
-        $this->model->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $passwordRepeat = $_POST['passwordRepeat'];
+        $this->model->hashedPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-        $errors = $this->validateRegister($password, $passwordRepeat, $this->model);
+        $errors = $this->validateRegister($_POST['password'], $_POST['passwordRepeat'], $this->model);
 
         if ($errors) {
-            PageHelper::displayPage('users/register.php', $params = array('errors' => $errors));
+            PageHelper::displayPage('users/register.php', $params = ['errors' => $errors]);
             return;
         }
 
@@ -113,16 +111,21 @@ class UserController extends Controller
         }
 
         $this->model->username = $_POST['username'];
-        $password = $_POST['password'];
-
-        $errors = $this->validateLogIn($password, $this->model);
+        $errors = $this->model->validateLogInParams($_POST['password']);
 
         if ($errors) {
-            PageHelper::displayPage('users/log_in.php', $params = array('errors' => $errors));
+            PageHelper::displayPage('users/log_in.php', $params = ['errors' => $errors]);
             return;
         }
 
-        $this->model = $this->model->getFirstWhere('username', $this->model->username);
+        $this->model = $this->model->getFirstWhere('username', $_POST['username']);
+
+        $errors = $this->validateLogIn($_POST['password'], $this->model);
+
+        if ($errors) {
+            PageHelper::displayPage('users/log_in.php', $params = ['errors' => $errors]);
+            return;
+        }
 
         SessionHelper::logIn($this->model->id, $this->model->role_id);
 

@@ -26,14 +26,7 @@ trait UserValidationTrait
 
     public function validateLogIn($password, $user)
     {
-        $errors = $user->validateLogInParams($password);
-
-        if ($errors) {
-            return $errors;
-        }
-
-        $user = $user->getFirstWhere('username', $user->username);
-
+        $errors = [];
         if (!isset($user->email)) {
             $errors[] = 'Username does not exists';
             return $errors;

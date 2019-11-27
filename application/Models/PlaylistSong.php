@@ -31,9 +31,9 @@ class PlaylistSong extends Model
                 ";
 
         $stmt = $this->db->prepare($sql);
-        $params = array(
+        $params = [
             ':user_id' => $user_id,
-        );
+        ];
         $stmt->execute($params);
         $result = $stmt->fetchAll();
         return $result;

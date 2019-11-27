@@ -9,6 +9,6 @@ class ProblemController extends Controller
 {
     public function index()
     {
-        PageHelper::displayPage('problem/index.php', $params = array('errors' => array()));
+        PageHelper::displayPage('problem/index.php', $params = ['errors' => []]);
     }
 }

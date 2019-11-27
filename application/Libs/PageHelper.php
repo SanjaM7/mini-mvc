@@ -4,13 +4,13 @@ namespace Application\Libs;
 
 class PageHelper
 {
-    public static function displayPage($viewName, $params = array())
+    public static function displayPage($viewName, $params = [])
     {
         $isLoggedIn = SessionHelper::isUserLoggedIn();
         if(empty($params['errors'])){
-            $errors = array (
+            $errors = [
                 'errors' => SessionHelper::getAndClearErrors()
-            );
+            ];
             $params = array_merge($params, $errors);
         }
         if($isLoggedIn) {

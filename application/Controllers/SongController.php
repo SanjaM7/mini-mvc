@@ -29,33 +29,34 @@ class SongController extends Controller
             $song->duration = $duration->formatted();
         }
         $count_of_songs = $this->model->count();
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'songs' => $songs,
             'count_of_songs' => $count_of_songs,
-        );
+        ];
 
         PageHelper::displayPage('songs/index.php', $params);
     }
 
     public function searchSong()
     {
-        if (!isset($_POST['searchName'])) {
+        $searchName = $_POST['searchName'];
+
+        if (!isset($searchName)) {
             return PageHelper::redirectBack();
         }
 
-        $searchName = $_POST['searchName'];
         $searches = $this->model->search($searchName, 'artist', 'track');
 
         if (empty($searchName) && empty($searches)) {
             return PageHelper::redirectBack();
         }
 
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'searches' => $searches,
             'searchName' => $searchName
-        );
+        ];
 
         return PageHelper::displayPage('songs/search.php', $params);
     }
@@ -116,12 +117,11 @@ class SongController extends Controller
         if ($song->user_id != $user_id) {
             return PageHelper::redirect('song/index');
         }
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'song' => $song
-        );
+        ];
         PageHelper::displayPage('songs/edit.php', $params);
-
     }
 
     public function updateSong()
@@ -134,17 +134,15 @@ class SongController extends Controller
             $this->model->track = $_POST['track'];
             $this->model->link = $_POST['link'];
             $this->model->user_id = $user_id;
-            $minutes = $_POST['minutes'];
-            $seconds = $_POST['seconds'];
 
-            $errors = $this->model->validateSongParams($minutes, $seconds);
+            $errors = $this->model->validateSongParams($_POST['minutes'], $_POST['seconds']);
 
             if ($errors) {
                 SessionHelper::setErrors($errors);
                 return PageHelper::redirect('song/' . $this->model->id . '/editSong');
             }
 
-            $duration = new Duration("$minutes:$seconds");
+            $duration = new Duration($_POST['minutes'] . ':' . $_POST['seconds']);
             $this->model->duration = $duration->toSeconds();
 
             $this->model->update();

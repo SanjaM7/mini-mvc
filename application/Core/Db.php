@@ -19,10 +19,10 @@ class Db
 
     private function __construct()
     {
-        $options = array(
+        $options = [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
-        );
+        ];
         try {
             $this->pdo = new PDO(
                 DB_TYPE .

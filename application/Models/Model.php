@@ -47,9 +47,9 @@ abstract class Model
         }
 
         $stmt = $this->db->prepare($sql);
-        $params = array(
+        $params = [
             ":$key" => $value
-        );
+        ];
         $stmt->execute($params);
         //returns a new instance of the requested class, mapping the columns of the result set to named properties in the class
         $result = $stmt->fetchAll(\PDO::FETCH_CLASS, get_called_class());
@@ -149,11 +149,11 @@ abstract class Model
         //UPDATE roles SET deleted = :1 WHERE id = :id AND deleted = :0;
         $sql = "UPDATE $this->table SET deleted = :1 WHERE id = :id AND deleted = :0";
         $stmt = $this->db->prepare($sql);
-        $params = array(
+        $params = [
             ':1' => 1,
             ':id' => $id,
             ':0' => 0
-        );
+        ];
         $stmt->execute($params);
         $affectedRows = $stmt->rowCount();
         return $affectedRows;
@@ -174,7 +174,7 @@ abstract class Model
         $keys = array_keys($assocArray);
         $columns = implode(', ', $keys);
 
-        $params = array();
+        $params = [];
         foreach ($keys as $key) {
             $params[":$key"] = $assocArray[$key];
         }
@@ -204,14 +204,14 @@ abstract class Model
 
         $keys = array_keys($assocArray);
 
-        $setArgs = array();
+        $setArgs = [];
         foreach ($keys as $key) {
             $setArgs[] = "$key = :$key";
         }
 
         $setStatement = implode(', ', $setArgs);
 
-        $params = array();
+        $params = [];
         foreach ($keys as $key) {
             $params[":$key"] = $assocArray[$key];
         }
@@ -234,14 +234,14 @@ abstract class Model
     public function search($searchName, $first, $second)
     {
         if (empty($searchName)) {
-            return array();
+            return [];
         }
         $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
         $stmt = $this->db->prepare($sql);
-        $params = array(
+        $params = [
             ':searchName' => "%$searchName%",
             ':searchName' => "%$searchName%"
-        );
+        ];
         $stmt->execute($params);
         $result = $stmt->fetchAll(\PDO::FETCH_CLASS, get_called_class());
         return $result;

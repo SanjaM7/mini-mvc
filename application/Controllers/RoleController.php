@@ -23,10 +23,10 @@ class RoleController extends Controller
     {
         $rolesWithUsersCount = $this->model->getRolesWithUsersCount();
         $roleViewModels = $this->mapToRoleViewModel($rolesWithUsersCount);
-        $params = array(
-            'errors' => array(),
+        $params = [
+            'errors' => [],
             'roles' => $roleViewModels
-        );
+        ];
 
         PageHelper::displayPage('roles/index.php', $params);
     }
@@ -62,10 +62,10 @@ class RoleController extends Controller
     {
         if (isset($role_id)) {
             $role = $this->model->get($role_id);
-            $params = array(
-                'errors' => array(),
+            $params = [
+                'errors' => [],
                 'role' => $role
-            );
+            ];
             PageHelper::displayPage('roles/edit.php', $params);
             return;
         }
@@ -94,7 +94,7 @@ class RoleController extends Controller
 
     private function mapToRoleViewModel($rolesWithUsersCount)
     {
-        $roleViewModels = array();
+        $roleViewModels = [];
         for($i = 0; $i < count($rolesWithUsersCount); $i++){
             $roleViewModel = new RoleViewModel();
             $roleViewModel->id = $rolesWithUsersCount[$i]->id;

@@ -13,7 +13,7 @@ class Role extends Model
 
     public function validateRoleParams()
     {
-        $errors = array();
+        $errors = [];
         if (empty($this->name) || strlen($this->name) > 20) {
             $errors[] = 'Invalid Role';
         }
