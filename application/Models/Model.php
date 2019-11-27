@@ -30,7 +30,7 @@ abstract class Model
     /**
      * Get records from database where given condition is satisfied
      * @param string $key column name
-     * @param mixed $value
+     * @param mixed $value for querying the database
      * @param int $limit limits the number of records returned
      * @param string $order default is ASC
      * @return array of objects of called class
@@ -58,9 +58,9 @@ abstract class Model
 
     /**
      * Get all records from database (LIMIT 0) where given condition is satisfied, order ASC
-     * @param $key
-     * @param $value
-     * @return array
+     * @param string $key column name
+     * @param mixed $value for querying the database
+     * @return array of objects of called class
      */
     public function getWhere($key, $value)
     {
@@ -69,9 +69,9 @@ abstract class Model
 
     /**
      * Get single record from database (LIMIT 1) where given condition is satisfied, order ASC
-     * @param $key
-     * @param $value
-     * @return object
+     * @param string $key column name
+     * @param mixed $value for querying the database
+     * @return object single object of called class
      */
     public function getFirstWhere($key, $value)
     {
@@ -86,8 +86,8 @@ abstract class Model
 
     /**
      * Get single record by id from database
-     * @param int $id
-     * @return object
+     * @param int $id value for querying the database
+     * @return object single object of called class
      */
     public function get($id)
     {
@@ -96,7 +96,7 @@ abstract class Model
 
     /**
      * Get all records from database
-     * @return array
+     * @return array of objects of called class
      */
     public function getAll()
     {
@@ -105,9 +105,9 @@ abstract class Model
 
     /**
      * Get last two records from database (LIMIT 2) where given condition is satisfied, order DESC
-     * @param $key
-     * @param $value
-     * @return array
+     * @param string $key column name
+     * @param mixed $value for querying the database
+     * @return array of objects of called class
      */
     public function getLastTwo($key, $value)
     {
@@ -116,8 +116,8 @@ abstract class Model
 
     /**
      * Check for existence of specific record in database
-     * @param $key
-     * @param $value
+     * @param string $key column name
+     * @param mixed $value for querying the database
      * @return bool returns true if record exists otherwise false
      */
     public function exists($key, $value)
@@ -141,7 +141,7 @@ abstract class Model
 
     /**
      * Soft delete record by id in database (changes the deleted column value from 0 to 1)
-     * @param $id
+     * @param int $id value for querying the database
      * @return int return number of affected rows (1)
      */
     public function softDelete($id)
@@ -160,7 +160,7 @@ abstract class Model
     }
 
     /**
-     * Save a record to database
+     * Save a record to database and sets given model id
      */
     public function save()
     {
@@ -226,10 +226,10 @@ abstract class Model
 
     /**
      * Get all records from database where given first or second condition is satisfied
-     * @param $searchName
-     * @param $first
-     * @param $second
-     * @return array
+     * @param string $searchName value for searching the database for
+     * @param string $first column name
+     * @param string $second column name
+     * @return array of objects of called class
      */
     public function search($searchName, $first, $second)
     {
@@ -239,8 +239,8 @@ abstract class Model
         $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
         $stmt = $this->db->prepare($sql);
         $params = array(
-            ':searchName' => "%" . $searchName . "%",
-            ':searchName' => "%" . $searchName . "%"
+            ':searchName' => "%$searchName%",
+            ':searchName' => "%$searchName%"
         );
         $stmt->execute($params);
         $result = $stmt->fetchAll(\PDO::FETCH_CLASS, get_called_class());
