@@ -4,18 +4,46 @@ namespace Application\Models;
 
 use Application\Libs\SessionHelper;
 
+/**
+ * Class Playlist
+ * This class extends model and represents playlist record from database
+ * @package Application\Models
+ */
 class Playlist extends Model
 {
+    /**
+     * @var int
+     */
     public $id;
+    /**
+     * @var string
+     */
     public $name;
+    /**
+     * @var int
+     */
     public $user_id;
+    /**
+     * @var int
+     */
     public $duration;
 
+    /**
+     * Playlist constructor.
+     */
     public function __construct(){
         parent::__construct('playlists');
     }
 
-   public function validatePlaylistParams($hours, $minutes, $seconds)
+    /**
+     * Validates playlist parameters
+     * @param int $hours
+     * @param int $minutes
+     * @param int $seconds
+     *
+     * @return string[]
+     */
+    public function validatePlaylistParams($hours, $minutes, $seconds)
     {
         $errors = [];
         if (empty($this->name) || strlen($this->name) > 20) {
@@ -33,6 +61,9 @@ class Playlist extends Model
         return $errors;
     }
 
+    /**
+     * Generate playlist
+     */
     public function generatePlaylist()
     {
         $songs = $this->getSongs();
@@ -40,6 +71,10 @@ class Playlist extends Model
         $this->generateNoRepeatPlaylist($songs, $sameSongsIds);
     }
 
+    /**
+     * Returns all songs which haven't been deleted
+     * @return Song[]
+     */
     private function getSongs()
     {
         $song = new Song();
@@ -47,6 +82,10 @@ class Playlist extends Model
         return $songs;
     }
 
+    /**
+     * Returns array of same song ids from last two playlists
+     * @return int[]
+     */
     private function getSameSongIds()
     {
         $lastTwoPlaylists = $this->getLastTwo('user_id', $this->user_id);
@@ -62,6 +101,11 @@ class Playlist extends Model
         return $sameSongsIds;
     }
 
+    /**
+     * Removes songs with same id's and passes filtered array
+     * @param Song[] $songs
+     * @param int[] $sameSongsIds
+     */
     private function generateNoRepeatPlaylist($songs, $sameSongsIds)
     {
         $filterFunc = function($song) use ($sameSongsIds){
@@ -72,6 +116,10 @@ class Playlist extends Model
         $this->generateRandomPlaylist($filtered);
     }
 
+    /**
+     * Saves the playlist and picks a random song and saves it
+     * @param Song[] $songs
+     */
     private function generateRandomPlaylist($songs)
     {
         $this->save();

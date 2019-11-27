@@ -2,13 +2,35 @@
 
 namespace Application\Models;
 
+/**
+ * Class RoleViewModel
+ * This class is only for view role with count of users
+ * @package Application\Models
+ */
 class RoleViewModel
 {
-    public $id;
+    /**
+     * @var int
+     */
+    //public $id;
+    /**
+     * @var string
+     */
     public $name;
+    /**
+     * @var bool
+     */
     public $deleted;
+    /**
+     * @var int
+     */
     public $countOfUsers;
 
+    /**
+     * RoleViewModel constructor.
+     *
+     * @param RoleViewModel $roleWithUsersCount
+     */
     public function __construct($roleWithUsersCount)
     {
         $this->id = $roleWithUsersCount->id;

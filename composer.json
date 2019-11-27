@@ -26,6 +26,8 @@
         "psr-4": {
             "Application\\": "application/"
         }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^3.6"
     }
-
 }

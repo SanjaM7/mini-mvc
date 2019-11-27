@@ -2,17 +2,37 @@
 
 namespace Application\Models;
 
+/**
+ * Class PlaylistSong
+ * This class extends model and represents model for playlist_song pivot table
+ * @package Application\Models
+ */
 class PlaylistSong extends Model
 {
-    public $id;
+    /**
+     * @var int
+     */
     public $playlist_id;
+    /**
+     * @var int
+     */
     public $song_id;
 
+    /**
+     * PlaylistSong constructor.
+     */
     public function __construct()
     {
         parent::__construct('playlist_song');
     }
 
+    /**
+     *
+     * Returns playlist and songs data for last three playlists
+     * @param $user_id
+     *
+     * @return array
+     */
     public function getLastThreePlaylists($user_id)
     {
         $sql = "SELECT lastThreePlaylists.playlist_id, name, lastThreePlaylists.user_id as user_id, lastThreePlaylists.playlist_duration,

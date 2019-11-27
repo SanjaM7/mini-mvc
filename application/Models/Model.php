@@ -12,27 +12,34 @@ use Application\Core\Db;
  */
 abstract class Model
 {
-    /** @var \PDO object database access layer */
+    /**
+     * @var \PDO object database access layer
+     */
     public $db;
-    /** @var string table name */
+    /**
+     * @var string table name
+     */
     public $table;
 
     /**
      * Model constructor.
+     *
      * @param string $table this parameter is set by extended class
      */
     function __construct($table)
     {
         $this->table = $table;
-        $this->db = Db::getPdo();
+        $this->db    = Db::getPdo();
     }
 
     /**
      * Get records from database where given condition is satisfied
-     * @param string $key column name
-     * @param mixed $value for querying the database
-     * @param int $limit limits the number of records returned
+     *
+     * @param string $key   column name
+     * @param mixed  $value for querying the database
+     * @param int    $limit limits the number of records returned
      * @param string $order default is ASC
+     *
      * @return array of objects of called class
      */
     private function doGetWhere($key, $value, $limit, $order)
@@ -46,7 +53,7 @@ abstract class Model
             $sql = "$sql LIMIT $limit";
         }
 
-        $stmt = $this->db->prepare($sql);
+        $stmt   = $this->db->prepare($sql);
         $params = [
             ":$key" => $value
         ];
@@ -58,8 +65,10 @@ abstract class Model
 
     /**
      * Get all records from database (LIMIT 0) where given condition is satisfied, order ASC
-     * @param string $key column name
-     * @param mixed $value for querying the database
+     *
+     * @param string $key   column name
+     * @param mixed  $value for querying the database
+     *
      * @return array of objects of called class
      */
     public function getWhere($key, $value)
@@ -69,14 +78,16 @@ abstract class Model
 
     /**
      * Get single record from database (LIMIT 1) where given condition is satisfied, order ASC
-     * @param string $key column name
-     * @param mixed $value for querying the database
+     *
+     * @param string $key   column name
+     * @param mixed  $value for querying the database
+     *
      * @return object single object of called class
      */
     public function getFirstWhere($key, $value)
     {
         $result = $this->doGetWhere($key, $value, 1, 'ASC');
-        $first = null;
+        $first  = null;
         if (!empty($result)) {
             $first = $result[0];
         }
@@ -86,7 +97,9 @@ abstract class Model
 
     /**
      * Get single record by id from database
+     *
      * @param int $id value for querying the database
+     *
      * @return object single object of called class
      */
     public function get($id)
@@ -105,8 +118,10 @@ abstract class Model
 
     /**
      * Get last two records from database (LIMIT 2) where given condition is satisfied, order DESC
-     * @param string $key column name
-     * @param mixed $value for querying the database
+     *
+     * @param string $key   column name
+     * @param mixed  $value for querying the database
+     *
      * @return array of objects of called class
      */
     public function getLastTwo($key, $value)
@@ -116,8 +131,10 @@ abstract class Model
 
     /**
      * Check for existence of specific record in database
-     * @param string $key column name
-     * @param mixed $value for querying the database
+     *
+     * @param string $key   column name
+     * @param mixed  $value for querying the database
+     *
      * @return bool returns true if record exists otherwise false
      */
     public function exists($key, $value)
@@ -132,7 +149,7 @@ abstract class Model
      */
     public function count()
     {
-        $sql = "SELECT COUNT(id) AS count FROM $this->table";
+        $sql  = "SELECT COUNT(id) AS count FROM $this->table";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch()->count;
@@ -141,14 +158,16 @@ abstract class Model
 
     /**
      * Soft delete record by id in database (changes the deleted column value from 0 to 1)
+     *
      * @param int $id value for querying the database
+     *
      * @return int return number of affected rows (1)
      */
     public function softDelete($id)
     {
         //UPDATE roles SET deleted = :1 WHERE id = :id AND deleted = :0;
-        $sql = "UPDATE $this->table SET deleted = :1 WHERE id = :id AND deleted = :0";
-        $stmt = $this->db->prepare($sql);
+        $sql    = "UPDATE $this->table SET deleted = :1 WHERE id = :id AND deleted = :0";
+        $stmt   = $this->db->prepare($sql);
         $params = [
             ':1' => 1,
             ':id' => $id,
@@ -165,26 +184,26 @@ abstract class Model
     public function save()
     {
         //"insert into songs (artist, track, link) values (:artist, :track, :link)";
-        $sql = "INSERT INTO $this->table";
+        $sql        = "INSERT INTO $this->table";
         $assocArray = get_object_vars($this);
         unset($assocArray['id']);
         unset($assocArray['db']);
         unset($assocArray['table']);
 
-        $keys = array_keys($assocArray);
+        $keys    = array_keys($assocArray);
         $columns = implode(', ', $keys);
 
         $params = [];
         foreach ($keys as $key) {
             $params[":$key"] = $assocArray[$key];
         }
-        $paramsKeys = array_keys($params);
+        $paramsKeys    = array_keys($params);
         $paramsAliases = implode(', ', $paramsKeys);
-        $sql = "$sql ($columns) VALUES ($paramsAliases)";
+        $sql           = "$sql ($columns) VALUES ($paramsAliases)";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        $id = $this->db->lastInsertId();
+        $id       = $this->db->lastInsertId();
         $this->id = $id;
     }
 
@@ -195,8 +214,8 @@ abstract class Model
     public function update()
     {
         //UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :id;
-        $sql = "UPDATE $this->table";
-        $id = (int)$this->id;
+        $sql        = "UPDATE $this->table";
+        $id         = (int)$this->id;
         $assocArray = get_object_vars($this);
         unset($assocArray['id']);
         unset($assocArray['db']);
@@ -217,8 +236,8 @@ abstract class Model
         }
 
         $params[':id'] = $id;
-        $sql = "$sql SET $setStatement WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
+        $sql           = "$sql SET $setStatement WHERE id = :id";
+        $stmt          = $this->db->prepare($sql);
         $stmt->execute($params);
         $affectedRows = $stmt->rowCount();
         return $affectedRows;
@@ -226,9 +245,11 @@ abstract class Model
 
     /**
      * Get all records from database where given first or second condition is satisfied
+     *
      * @param string $searchName value for searching the database for
-     * @param string $first column name
-     * @param string $second column name
+     * @param string $first      column name
+     * @param string $second     column name
+     *
      * @return array of objects of called class
      */
     public function search($searchName, $first, $second)
@@ -236,8 +257,8 @@ abstract class Model
         if (empty($searchName)) {
             return [];
         }
-        $sql = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
-        $stmt = $this->db->prepare($sql);
+        $sql    = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
+        $stmt   = $this->db->prepare($sql);
         $params = [
             ':searchName' => "%$searchName%",
             ':searchName' => "%$searchName%"

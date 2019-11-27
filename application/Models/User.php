@@ -2,17 +2,44 @@
 
 namespace Application\Models;
 
+/**
+ * Class User
+ * This class extends model and represents user record from database
+ * @package Application\Models
+ */
 class User extends Model
 {
+    /**
+     * @var int
+     */
     public $id;
+    /**
+     * @var string
+     */
     public $username;
+    /**
+     * @var string
+     */
     public $email;
+    /**
+     * @var string
+     */
     public $hashedPassword;
 
+    /**
+     * User constructor.
+     */
     public function __construct(){
         parent::__construct('users');
     }
 
+    /**
+     * Validates register parameters
+     * @param string $password
+     * @param string $passwordRepeat
+     *
+     * @return array
+     */
     public function validateRegisterParams($password, $passwordRepeat)
     {
         $errors = [];
@@ -31,6 +58,12 @@ class User extends Model
         return $errors;
     }
 
+    /**
+     * Validates log in parameters
+     * @param string $password
+     *
+     * @return string[]
+     */
     public function validateLogInParams($password)
     {
         $errors = [];

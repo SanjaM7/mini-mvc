@@ -2,15 +2,33 @@
 
 namespace Application\Models;
 
+/**
+ * Class Role
+ * This class extends model and represents role record from database
+ * @package Application\Models
+ */
 class Role extends Model
 {
+    /**
+     * @var int
+     */
     public $id;
+    /**
+     * @var string
+     */
     public $name;
 
+    /**
+     * Role constructor.
+     */
     public function __construct(){
         parent::__construct('roles');
     }
 
+    /**
+     * Validates role parameter
+     * @return string[]
+     */
     public function validateRoleParams()
     {
         $errors = [];
@@ -21,6 +39,10 @@ class Role extends Model
         return $errors;
     }
 
+    /**
+     * Returns roles with count of users
+     * @return object[]
+     */
     public function getRolesWithUsersCount(){
         $sql = 'SELECT roles.id, roles.name, deleted, COUNT(users.id) as countOfUsers
                 FROM roles
