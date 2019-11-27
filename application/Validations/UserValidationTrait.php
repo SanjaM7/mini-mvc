@@ -2,8 +2,20 @@
 
 namespace Application\Validations;
 
+/**
+ * Trait UserValidationTrait
+ * This trait groups the validate functionality and removes it from user controller
+ * @package Application\Validations
+ */
 trait UserValidationTrait
 {
+    /**
+     * Validates user credentials for registering
+     * @param string $password
+     * @param string $passwordRepeat
+     * @param object $user
+     * @return string[]
+     */
     public function validateRegister($password, $passwordRepeat, $user)
     {
         $errors = $user->validateRegisterParams($password, $passwordRepeat);
@@ -24,6 +36,12 @@ trait UserValidationTrait
         return $errors;
     }
 
+    /**
+     * Validates user credentials for login
+     * @param string $password
+     * @param object $user
+     * @return string[]
+     */
     public function validateLogIn($password, $user)
     {
         $errors = [];

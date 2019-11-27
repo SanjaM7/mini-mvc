@@ -142,7 +142,7 @@ class UserController extends Controller
     }
 
     /**
-     *  This controller handles loggin users in and redirecting them to home screen
+     *  This controller handles login users in and redirecting them to home screen
      * @return \Illuminate\Http\RedirectResponse|void
      */
     public function postLogIn()
@@ -175,7 +175,7 @@ class UserController extends Controller
     }
 
     /**
-     * This controller handles loggin users out and redirecting them to home screen
+     * This controller handles login users out and redirecting them to home screen
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postLogOut()

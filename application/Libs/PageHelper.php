@@ -2,8 +2,19 @@
 
 namespace Application\Libs;
 
+/**
+ * Class PageHelper
+ * This helper class is responsible for loading passed view with parameters and redirecting
+ * @package Application\Libs
+ */
 class PageHelper
 {
+    /**
+     * Loads passed page with params, get errors and passes authentication params to view
+     * @param string $viewName
+     * @param array $params
+     * @return void
+     */
     public static function displayPage($viewName, $params = [])
     {
         $isLoggedIn = SessionHelper::isUserLoggedIn();
@@ -23,12 +34,21 @@ class PageHelper
         require ROOT . 'view/_templates/footer.php';
     }
 
+    /**
+     * Redirect to passed route
+     * @param string $url
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public static function redirect($url)
     {
         global $redirect;
         return $redirect->to($url);
     }
 
+    /**
+     * Redirect user to their previous location
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public static function redirectBack()
     {
         global $redirect;
