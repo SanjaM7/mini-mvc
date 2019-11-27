@@ -20,8 +20,6 @@ class PlaylistSong extends Model
                 FROM 
                      (SELECT DISTINCT playlists.id as playlist_id, name, playlists.user_id, playlists.duration as playlist_duration
                       FROM playlists
-                      INNER JOIN playlist_song
-                      ON playlists.id = playlist_song.playlist_id 
                       WHERE user_id = :user_id
                       ORDER BY playlist_id DESC LIMIT 3) 
                 as lastThreePlaylists
