@@ -72,7 +72,7 @@ class RoleController extends Controller
 
     /**
      * This method handles soft deleting role
-     * @param int $role_id
+     * @param int|null $role_id
      *
      * @return RedirectResponse
      */
@@ -87,7 +87,7 @@ class RoleController extends Controller
 
     /**
      * This method handles editing role
-     * @param int $role_id
+     * @param int|null $role_id
      *
      * @return RedirectResponse|void
      */

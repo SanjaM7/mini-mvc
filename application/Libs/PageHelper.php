@@ -31,9 +31,9 @@ class PageHelper
             $isAdmin = SessionHelper::isAdmin();
         }
         // load views
-        require ROOT . 'view/_templates/header.php';
-        require ROOT . 'view/' . $viewName;
-        require ROOT . 'view/_templates/footer.php';
+        require (string)getenv('ROOT') . 'view/_templates/header.php';
+        require (string)getenv('ROOT') . 'view/' . $viewName;
+        require (string)getenv('ROOT') . 'view/_templates/footer.php';
     }
 
     /**

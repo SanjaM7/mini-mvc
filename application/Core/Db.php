@@ -3,7 +3,6 @@
 namespace Application\Core;
 use PDO;
 use PDOException;
-
 /**
  * Class Db
  * This class makes singleton connection with database
@@ -12,7 +11,7 @@ use PDOException;
 class Db
 {
     /**
-     * @var null
+     * @var Db|null
      */
     private static $db = null;
     /**
@@ -44,12 +43,12 @@ class Db
         ];
         try {
             $this->pdo = new PDO(
-                DB_TYPE .
-                ':host=' . DB_HOST .
-                ';dbname=' . DB_NAME .
-                ';charset=' . DB_CHARSET,
-                DB_USER,
-                DB_PASS,
+                (string)getenv('DB_TYPE') .
+                ':host=' . (string)getenv('DB_HOST') .
+                ';dbname=' . (string)getenv('DB_NAME') .
+                ';charset=' . (string) getenv('DB_CHARSET'),
+                (string)getenv('DB_USER'),
+                (string)getenv('DB_PASS'),
                 $options
             );
         } catch (PDOException $e) {

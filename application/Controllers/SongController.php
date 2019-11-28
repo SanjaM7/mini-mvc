@@ -41,7 +41,7 @@ class SongController extends Controller
         $songs = $this->model->getWhere('user_id', $user_id);
         foreach($songs as $song){
             $song_duration = $song->duration;
-            $duration = new Duration("$song_duration");
+            $duration = new Duration($song_duration);
             $song->duration = $duration->formatted();
         }
         $count_of_songs = $this->model->count();
@@ -105,7 +105,7 @@ class SongController extends Controller
                 return PageHelper::redirect('song/index');
             }
 
-            $duration = new Duration("$minutes:$seconds");
+            $duration = new Duration($minutes . ':' . $seconds);
             $this->model->duration = $duration->toSeconds();
 
             $this->model->save();
@@ -116,7 +116,7 @@ class SongController extends Controller
 
     /**
      * This method handles soft deleting song
-     * @param int $song_id
+     * @param int|null $song_id
      *
      * @return RedirectResponse
      */
@@ -138,7 +138,7 @@ class SongController extends Controller
      * This method handles editing song
      * @param int $song_id
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|void
      */
     public function editSong($song_id)
     {

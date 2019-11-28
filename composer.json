@@ -20,7 +20,8 @@
         "ext-pdo": "*",
         "illuminate/routing": "^6.5",
         "illuminate/events": "^6.5",
-        "khill/php-duration": "^1.0"
+        "khill/php-duration": "^1.0",
+        "vlucas/phpdotenv": "^3.6"
     },
     "autoload": {
         "psr-4": {

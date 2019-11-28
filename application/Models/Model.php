@@ -13,6 +13,10 @@ use Application\Core\Db;
 abstract class Model
 {
     /**
+     * @var mixed
+     */
+    public $id;
+    /**
      * @var \PDO object database access layer
      */
     public $db;
@@ -216,8 +220,8 @@ abstract class Model
     {
         //UPDATE songs SET artist = :artist, track = :track, link = :link WHERE id = :id;
         $sql        = "UPDATE $this->table";
-        $id         = (int)$this->id;
         $assocArray = get_object_vars($this);
+        $id         = (int)$this->id;
         unset($assocArray['id']);
         unset($assocArray['db']);
         unset($assocArray['table']);
@@ -261,7 +265,6 @@ abstract class Model
         $sql    = "SELECT * FROM $this->table WHERE $first LIKE :searchName OR $second LIKE :searchName";
         $stmt   = $this->db->prepare($sql);
         $params = [
-            ':searchName' => "%$searchName%",
             ':searchName' => "%$searchName%"
         ];
         $stmt->execute($params);

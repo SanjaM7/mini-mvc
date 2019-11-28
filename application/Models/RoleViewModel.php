@@ -12,7 +12,7 @@ class RoleViewModel
     /**
      * @var int
      */
-    //public $id;
+    public $id;
     /**
      * @var string
      */

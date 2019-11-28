@@ -10,10 +10,6 @@ namespace Application\Models;
 class User extends Model
 {
     /**
-     * @var int
-     */
-    public $id;
-    /**
      * @var string
      */
     public $username;

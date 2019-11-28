@@ -58,7 +58,7 @@ class UserController extends Controller
      * This method handles editing user role
      * @param int $user_id
      *
-     * @return RedirectResponse
+     * @return RedirectResponse|void
      */
     public function editUserRole($user_id)
     {

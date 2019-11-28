@@ -67,8 +67,10 @@ class PlaylistController extends Controller
                 SessionHelper::setErrors($errors);
                 return PageHelper::redirect('playlist/index');
             }
-
-            $duration = new Duration($_POST['hours'] . ':' . $_POST['minutes']. ':' . $_POST['seconds']);
+            $hours = $_POST['hours'];
+            $minutes = $_POST['minutes'];
+            $seconds = $_POST['seconds'];
+            $duration = new Duration($hours . ":" . $minutes . ":" . $seconds);
             $this->model->duration = $duration->toSeconds();
 
             $this->model->generatePlaylist();

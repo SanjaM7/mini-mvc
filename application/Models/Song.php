@@ -10,10 +10,6 @@ namespace Application\Models;
 class Song extends Model
 {
     /**
-     * @var int
-     */
-    public $id;
-    /**
      * @var string
      */
     public $artist;

@@ -12,10 +12,6 @@ use Application\Libs\SessionHelper;
 class Playlist extends Model
 {
     /**
-     * @var int
-     */
-    public $id;
-    /**
      * @var string
      */
     public $name;

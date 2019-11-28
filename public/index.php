@@ -39,6 +39,8 @@ if (file_exists(ROOT . 'vendor/autoload.php')) {
 
 // load application config (error reporting etc.)
 require ROOT . 'config/config.php';
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
 
 // Create a service container
 $container = new Container;
@@ -61,6 +63,7 @@ $redirect = new Redirector(new UrlGenerator($router->getRoutes(), $request));
 $response = $router->dispatch($request);
 // Send the response back to the browser
 $response->send();
+
 
 
 

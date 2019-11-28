@@ -19,7 +19,7 @@ class PermissionHelper
     public static function requireAuthorized()
     {
         if(!SessionHelper::isUserLoggedIn()){
-            header('location: ' . URL . 'user/logIn');
+            header('location: ' . (string)getenv('URL') . 'user/logIn');
         }
     }
 
@@ -30,7 +30,7 @@ class PermissionHelper
     public static function requireUnauthorized()
     {
         if(SessionHelper::isUserLoggedIn()){
-            header('location: ' . URL . '/');
+            header('location: ' . (string)getenv('URL') . '/');
         }
     }
 
@@ -41,7 +41,7 @@ class PermissionHelper
     public static function requireAdmin()
     {
         if(!SessionHelper::isAdmin()){
-            header('location: ' . URL . '/');
+            header('location: ' . (string)getenv('URL') . '/');
         }
     }
 
@@ -52,7 +52,7 @@ class PermissionHelper
     public static function requireDj()
     {
         if(!SessionHelper::isDj()){
-            header('location: ' . URL . '/');
+            header('location: ' . (string)getenv('URL') . '/');
         }
     }
 }

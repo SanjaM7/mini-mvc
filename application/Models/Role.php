@@ -10,10 +10,6 @@ namespace Application\Models;
 class Role extends Model
 {
     /**
-     * @var int
-     */
-    public $id;
-    /**
      * @var string
      */
     public $name;
