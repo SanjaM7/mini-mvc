@@ -7,6 +7,7 @@ use Application\Libs\PermissionHelper;
 use Application\Libs\SessionHelper;
 use Application\Models\Role;
 use Application\Models\RoleViewModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
 /**
@@ -49,7 +50,7 @@ class RoleController extends Controller
     /**
      *
      * This method handles adding role
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function addRole()
     {
@@ -73,7 +74,7 @@ class RoleController extends Controller
      * This method handles soft deleting role
      * @param int $role_id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function softDeleteRole($role_id)
     {
@@ -88,7 +89,7 @@ class RoleController extends Controller
      * This method handles editing role
      * @param int $role_id
      *
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return RedirectResponse|void
      */
     public function editRole($role_id)
     {
@@ -107,7 +108,7 @@ class RoleController extends Controller
 
     /**
      * This method handles updating role
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updateRole()
     {

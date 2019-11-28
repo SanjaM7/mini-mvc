@@ -4,11 +4,26 @@ namespace Application\Core;
 use PDO;
 use PDOException;
 
+/**
+ * Class Db
+ * This class makes singleton connection with database
+ * @package Application\Core
+ */
 class Db
 {
+    /**
+     * @var null
+     */
     private static $db = null;
+    /**
+     * @var PDO
+     */
     private $pdo;
 
+    /**
+     * Restrict the instantiation of a class to a single object
+     * @return PDO
+     */
     public static function getPdo(){
         if(!isset(self::$db)){
             self::$db = new Db();
@@ -17,6 +32,10 @@ class Db
         return self::$db->pdo;
     }
 
+    /**
+     * Connect to a database with the credentials from config file
+     * Db constructor.
+     */
     private function __construct()
     {
         $options = [
