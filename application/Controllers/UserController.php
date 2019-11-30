@@ -27,22 +27,23 @@ class UserController extends Controller
 
     /**
      * UserController constructor.
+     * @param User $user
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->model = new User();
+        $this->model = $user;
     }
 
     /**
      *This method loads view with user and their roles
+     * @param Role $role
      * @return void
      */
-    public function index()
+    public function index(Role $role)
     {
         PermissionHelper::requireAdmin();
         $users          = $this->model->getAll();
         $count_of_users = $this->model->count();
-        $role           = new Role();
         $roles          = $role->getAll();
         $params         = [
             'errors' => [],
@@ -58,9 +59,10 @@ class UserController extends Controller
      * This method handles editing user role
      * @param int $user_id
      *
+     * @param Role $role
      * @return RedirectResponse|void
      */
-    public function editUserRole($user_id)
+    public function editUserRole($user_id, Role $role)
     {
         PermissionHelper::requireAdmin();
         if (!isset($user_id)) {
@@ -68,7 +70,6 @@ class UserController extends Controller
         }
 
         $user   = $this->model->get($user_id);
-        $role   = new Role();
         $roles  = $role->getAll();
         $params = [
             'errors' => [],

@@ -8,6 +8,7 @@ use Application\Libs\PermissionHelper;
 use Application\Models\Playlist;
 use Application\Models\PlaylistSong;
 use Application\Models\PlaylistViewModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Khill\Duration\Duration;
 
@@ -26,21 +27,22 @@ class PlaylistController extends Controller
     /**
      * PlaylistController constructor.
      * Creates a new playlist instance
+     * @param Playlist $playlist
      */
-    public function __construct()
+    public function __construct(Playlist $playlist)
     {
-        $this->model = new Playlist();
+        $this->model = $playlist;
         PermissionHelper::requireAuthorized();
     }
 
     /**
      * This method shows last three playlists for logged user
+     * @param PlaylistSong $playlistSong
      * @return void
      */
-    public function index()
+    public function index(PlaylistSong $playlistSong)
     {
         $user_id = SessionHelper::getUserId();
-        $playlistSong = new PlaylistSong();
         $lastThreePlaylists = $playlistSong->getLastThreePlaylists($user_id);
         $playlistViewModels = $this->mapToPlaylistViewModel($lastThreePlaylists);
         $params = [
@@ -53,7 +55,7 @@ class PlaylistController extends Controller
 
     /**
      * This method generates playlist and saves it
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function addPlaylist()
     {

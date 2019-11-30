@@ -24,10 +24,11 @@ class RoleController extends Controller
 
     /**
      * RoleController constructor.
+     * @param Role $role
      */
-    public function __construct()
+    public function __construct(Role $role)
     {
-        $this->model = new Role();
+        $this->model = $role;
         PermissionHelper::requireAdmin();
     }
 

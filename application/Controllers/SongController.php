@@ -24,10 +24,11 @@ class SongController extends Controller
 
     /**
      * SongController constructor.
+     * @param Song $song
      */
-    public function __construct()
+    public function __construct(Song $song)
     {
-        $this->model = new Song();
+        $this->model = $song;
     }
 
     /**
