@@ -3,6 +3,7 @@
 namespace Application\Models;
 
 use Application\Libs\SessionHelper;
+use Khill\Duration\Duration;
 
 /**
  * Class Playlist
@@ -55,6 +56,12 @@ class Playlist extends Model
             $errors[] = 'Invalid seconds';
         }
         return $errors;
+    }
+
+    public function setDurationToSeconds($hours, $minutes, $seconds)
+    {
+        $duration = new Duration($hours . ':' . $minutes . ':' . $seconds);
+        $this->duration = $duration->toSeconds();
     }
 
     /**

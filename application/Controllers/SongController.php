@@ -8,7 +8,6 @@ use Application\Libs\PermissionHelper;
 use Application\Models\Song;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
-use Khill\Duration\Duration;
 
 /**
  * Class SongController
@@ -41,10 +40,10 @@ class SongController extends Controller
         $user_id = SessionHelper::getUserId();
         $songs = $this->model->getWhere('user_id', $user_id);
         foreach($songs as $song){
-            $song_duration = $song->duration;
-            $duration = new Duration($song_duration);
-            $song->duration = $duration->formatted();
+            $this->model = $song;
+            $this->model->setDurationFormatted();
         }
+
         $count_of_songs = $this->model->count();
         $params = [
             'errors' => [],
@@ -96,18 +95,14 @@ class SongController extends Controller
             $this->model->link = $_POST['link'];
             $this->model->user_id = $user_id;
 
-            $minutes = $_POST['minutes'];
-            $seconds = $_POST['seconds'];
-
-            $errors = $this->model->validateSongParams($minutes, $seconds);
+            $errors = $this->model->validateSongParams($_POST['minutes'], $_POST['seconds']);
 
             if ($errors) {
                 SessionHelper::setErrors($errors);
                 return PageHelper::redirect('song/index');
             }
 
-            $duration = new Duration($minutes . ':' . $seconds);
-            $this->model->duration = $duration->toSeconds();
+            $this->model->setDurationToSeconds($_POST['minutes'], $_POST['seconds']);
 
             $this->model->save();
         }
@@ -183,9 +178,7 @@ class SongController extends Controller
                 return PageHelper::redirect('song/' . $this->model->id . '/editSong');
             }
 
-            $duration = new Duration($_POST['minutes'] . ':' . $_POST['seconds']);
-            $this->model->duration = $duration->toSeconds();
-
+            $this->model->setDurationToSeconds($_POST['minutes'],$_POST['seconds']);
             $this->model->update();
         }
 

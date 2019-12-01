@@ -2,6 +2,8 @@
 
 namespace Application\Models;
 
+use Khill\Duration\Duration;
+
 /**
  * Class Song
  * This class extends model and represents song record from database
@@ -60,5 +62,17 @@ class Song extends Model
             $errors[] = 'Invalid seconds';
         }
         return $errors;
+    }
+
+    public function setDurationFormatted()
+    {
+        $duration = new Duration($this->duration);
+        $this->duration = $duration->formatted();
+    }
+
+    public function setDurationToSeconds($minutes, $seconds)
+    {
+        $duration = new Duration($minutes . ':' . $seconds);
+        $this->duration = $duration->toSeconds();
     }
 }

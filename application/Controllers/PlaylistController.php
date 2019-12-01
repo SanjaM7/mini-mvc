@@ -10,7 +10,6 @@ use Application\Models\PlaylistSong;
 use Application\Models\PlaylistViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
-use Khill\Duration\Duration;
 
 /**
  * Class PlaylistController
@@ -69,12 +68,8 @@ class PlaylistController extends Controller
                 SessionHelper::setErrors($errors);
                 return PageHelper::redirect('playlist/index');
             }
-            $hours = $_POST['hours'];
-            $minutes = $_POST['minutes'];
-            $seconds = $_POST['seconds'];
-            $duration = new Duration($hours . ":" . $minutes . ":" . $seconds);
-            $this->model->duration = $duration->toSeconds();
 
+            $this->model->setDurationToSeconds($_POST['hours'], $_POST['minutes'], $_POST['seconds']);
             $this->model->generatePlaylist();
         }
 
@@ -102,14 +97,6 @@ class PlaylistController extends Controller
             };
 
             $playlistSongs = array_values(array_filter($playlists, $filterFunc));
-
-            $duration = new Duration($playlistSongs[0]->playlist_duration);
-            $playlistSongs[0]->playlist_duration = $duration->formatted();
-
-            foreach($playlistSongs as $playlistSong){
-                $duration = new Duration($playlistSong->song_duration);
-                $playlistSong->song_duration = $duration->formatted();
-            }
 
             $playlistViewModel = new PlaylistViewModel($playlistSongs);
             $playlistViewModels[] = $playlistViewModel;
